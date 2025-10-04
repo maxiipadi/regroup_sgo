@@ -1,0 +1,754 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}LEGION ALFA - Sistema de Reciclaje Circular para Marte{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-color: #1e40af;
+        --secondary-color: #3b82f6;
+        --accent-color: #60a5fa;
+        --dark-bg: #0f172a;
+        --success-color: #10b981;
+    }
+
+    /* Hero Section Mejorado */
+    .hero-section {
+        position: relative;
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+        color: white;
+        padding: 120px 0 100px;
+        overflow: hidden;
+    }
+
+    /* Efecto de estrellas animadas */
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-image:
+            radial-gradient(2px 2px at 20% 30%, white, transparent),
+            radial-gradient(2px 2px at 60% 70%, white, transparent),
+            radial-gradient(1px 1px at 50% 50%, white, transparent),
+            radial-gradient(1px 1px at 80% 10%, white, transparent),
+            radial-gradient(2px 2px at 90% 60%, white, transparent),
+            radial-gradient(1px 1px at 30% 80%, white, transparent),
+            radial-gradient(2px 2px at 40% 20%, white, transparent),
+            radial-gradient(1px 1px at 70% 90%, white, transparent);
+        background-size: 200% 200%;
+        animation: twinkle 8s ease-in-out infinite;
+        opacity: 0.6;
+        top: 0;
+        left: 0;
+    }
+
+    @keyframes twinkle {
+        0%, 100% { opacity: 0.6; }
+        50% { opacity: 1; }
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .hero-title {
+        font-size: 4.5rem;
+        font-weight: 900;
+        letter-spacing: 6px;
+        margin-bottom: 1.5rem;
+        text-shadow: 0 0 30px rgba(59, 130, 246, 0.8),
+                     0 0 60px rgba(59, 130, 246, 0.5);
+        animation: glow 3s ease-in-out infinite;
+    }
+
+    @keyframes glow {
+        0%, 100% {
+            text-shadow: 0 0 30px rgba(59, 130, 246, 0.8),
+                         0 0 40px rgba(59, 130, 246, 0.6);
+        }
+        50% {
+            text-shadow: 0 0 50px rgba(59, 130, 246, 1),
+                         0 0 80px rgba(96, 165, 250, 0.8),
+                         0 0 100px rgba(96, 165, 250, 0.6);
+        }
+    }
+
+    .hero-subtitle {
+        font-size: 1.5rem;
+        font-weight: 300;
+        margin-bottom: 2rem;
+        opacity: 0.95;
+        line-height: 1.8;
+    }
+
+    .hero-quote {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(96, 165, 250, 0.2) 100%);
+        backdrop-filter: blur(10px);
+        border-left: 4px solid var(--accent-color);
+        padding: 25px 30px;
+        border-radius: 15px;
+        margin: 30px 0;
+        font-style: italic;
+        font-size: 1.2rem;
+    }
+
+    .btn-hero {
+        padding: 15px 40px;
+        font-size: 1.1rem;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        margin: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-hero:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(59, 130, 246, 0.5);
+    }
+
+    .btn-primary.btn-hero {
+        background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+        border: none;
+    }
+
+    .hero-image {
+        position: relative;
+        filter: drop-shadow(0 0 30px rgba(59, 130, 246, 0.5));
+        animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(2deg); }
+    }
+
+    /* Architecture Section */
+    .architecture-section {
+        padding: 100px 0;
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    }
+
+    .section-title {
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+
+    .section-subtitle {
+        font-size: 1.2rem;
+        color: #64748b;
+        margin-bottom: 3rem;
+    }
+
+    .feature-card {
+        background: white;
+        border-radius: 20px;
+        padding: 40px 30px;
+        height: 100%;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border: 2px solid transparent;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .feature-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+        transform: scaleX(0);
+        transition: transform 0.4s ease;
+    }
+
+    .feature-card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .feature-card:hover {
+        transform: translateY(-15px);
+        border-color: var(--secondary-color);
+        box-shadow: 0 20px 50px rgba(30, 64, 175, 0.2);
+    }
+
+    .feature-icon {
+        font-size: 4rem;
+        background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 25px;
+        transition: all 0.3s ease;
+    }
+
+    .feature-card:hover .feature-icon {
+        transform: scale(1.1) rotate(5deg);
+    }
+
+    .feature-card h4 {
+        color: var(--primary-color);
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    /* Stats Section */
+    .stats-section {
+        background: linear-gradient(135deg, var(--success-color) 0%, #059669 100%);
+        color: white;
+        padding: 80px 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .stats-section::before {
+        content: '';
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+        border-radius: 50%;
+        top: -250px;
+        left: -250px;
+        animation: floatBubble1 15s ease-in-out infinite;
+    }
+
+    .stats-section::after {
+        content: '';
+        position: absolute;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        border-radius: 50%;
+        bottom: -200px;
+        right: -200px;
+        animation: floatBubble2 12s ease-in-out infinite;
+    }
+
+    @keyframes floatBubble1 {
+        0%, 100% { transform: translate(0, 0) scale(1); }
+        50% { transform: translate(30px, 30px) scale(1.1); }
+    }
+
+    @keyframes floatBubble2 {
+        0%, 100% { transform: translate(0, 0) scale(1); }
+        50% { transform: translate(-40px, -40px) scale(1.15); }
+    }
+
+    .stat-box {
+        text-align: center;
+        padding: 30px 20px;
+        position: relative;
+        z-index: 1;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.4s ease;
+        margin: 10px;
+    }
+
+    .stat-box:hover {
+        transform: translateY(-10px) scale(1.05);
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.4);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .stat-number {
+        font-size: 4rem;
+        font-weight: 800;
+        display: block;
+        text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    .stat-box:hover .stat-number {
+        transform: scale(1.1);
+        text-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .stat-label {
+        font-size: 1.1rem;
+        opacity: 0.95;
+        margin-top: 15px;
+        font-weight: 400;
+        letter-spacing: 0.5px;
+    }
+
+    /* NASA Challenge Section */
+    .nasa-section {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        color: white;
+        padding: 100px 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .nasa-section::before {
+        content: '';
+        position: absolute;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(96, 165, 250, 0.2) 0%, transparent 70%);
+        border-radius: 50%;
+        top: -300px;
+        right: -300px;
+        animation: moveGradient 12s ease-in-out infinite;
+    }
+
+    .nasa-section::after {
+        content: '';
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+        border-radius: 50%;
+        bottom: -250px;
+        left: -250px;
+        animation: moveGradient2 10s ease-in-out infinite;
+    }
+
+    @keyframes moveGradient {
+        0%, 100% { transform: translate(0, 0) scale(1); }
+        50% { transform: translate(-50px, 50px) scale(1.1); }
+    }
+
+    @keyframes moveGradient2 {
+        0%, 100% { transform: translate(0, 0) scale(1); }
+        50% { transform: translate(40px, -40px) scale(1.15); }
+    }
+
+    .nasa-header-icon {
+        background: rgba(255, 255, 255, 0.1);
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        transition: all 0.4s ease;
+    }
+
+    .nasa-header-icon:hover {
+        transform: scale(1.1) rotate(5deg);
+        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+    }
+
+    .timeline {
+        position: relative;
+        padding: 30px 0;
+    }
+
+    .timeline-item {
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        margin-bottom: 25px;
+        border-left: 5px solid var(--accent-color);
+        color: var(--dark-bg);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        z-index: 1;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+    }
+
+    .timeline-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 5px;
+        height: 100%;
+        background: linear-gradient(180deg, var(--accent-color), var(--secondary-color));
+        transform: scaleY(0);
+        transition: transform 0.4s ease;
+    }
+
+    .timeline-item:hover::before {
+        transform: scaleY(1);
+    }
+
+    .timeline-item:hover {
+        transform: translateX(15px) translateY(-5px);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+        border-left-color: var(--secondary-color);
+    }
+
+    .timeline-item h5 {
+        font-weight: 700;
+        margin-bottom: 15px;
+        font-size: 1.3rem;
+    }
+
+    .timeline-item h5 i {
+        font-size: 1.5rem;
+        margin-right: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .timeline-item:hover h5 i {
+        transform: scale(1.2) rotate(10deg);
+    }
+
+    /* Tachy Section */
+    .tachy-section {
+        padding: 100px 0;
+        background: white;
+    }
+
+    .tachy-card {
+        background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+        border-radius: 30px;
+        padding: 50px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        border: 2px solid #e2e8f0;
+    }
+
+    .tachy-image {
+        filter: drop-shadow(0 10px 30px rgba(59, 130, 246, 0.3));
+        transition: all 0.3s ease;
+    }
+
+    .tachy-image:hover {
+        transform: scale(1.05) rotate(-2deg);
+    }
+
+    .philosophy-box {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(96, 165, 250, 0.1));
+        border-left: 4px solid var(--secondary-color);
+        padding: 25px;
+        border-radius: 15px;
+        margin: 25px 0;
+    }
+
+    .philosophy-box h5 {
+        color: var(--primary-color);
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    /* CTA Section */
+    .cta-section {
+        background: var(--dark-bg);
+        color: white;
+        padding: 100px 0;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .cta-section::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-image:
+            radial-gradient(2px 2px at 30% 40%, white, transparent),
+            radial-gradient(1px 1px at 70% 60%, white, transparent),
+            radial-gradient(2px 2px at 50% 80%, white, transparent);
+        opacity: 0.3;
+    }
+
+    .cta-section .container {
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.5rem;
+            letter-spacing: 3px;
+        }
+        .section-title {
+            font-size: 2rem;
+        }
+        .stat-number {
+            font-size: 2.5rem;
+        }
+    }
+
+    /* Smooth animations */
+    .fade-in-up {
+        animation: fadeInUp 0.8s ease-out;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center hero-content">
+            <div class="col-lg-7 fade-in-up">
+                <h1 class="hero-title">
+                    LEGION ALFA
+                </h1>
+                <p class="hero-subtitle">
+                    Sistema de Reciclaje Circular para la Supervivencia en Marte
+                </p>
+                <p class="lead">
+                    Una solución revolucionaria para transformar cada gramo de residuo en recursos vitales, garantizando la autosuficiencia de la humanidad en el Planeta Rojo.
+                </p>
+                <div class="hero-quote">
+                    <i class="bi bi-quote"></i> "En Marte, no existe la 'basura', solo materias primas en el lugar equivocado."
+                </div>
+                <div class="mt-4">
+                    <a href="#arquitectura" class="btn btn-primary btn-hero">
+                        <i class="bi bi-diagram-3"></i> Explorar Arquitectura
+                    </a>
+                    <a href="#nasa-challenge" class="btn btn-outline-light btn-hero">
+                        <i class="bi bi-star-fill"></i> Desafío NASA
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-5 d-none d-lg-flex justify-content-center align-items-center fade-in-up">
+                <img src="{% static 'core/img/portada_marte.jpg' %}" alt="Paisaje de Marte" class="img-fluid rounded-4 hero-image" style="max-width: 90%;">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Architecture Section -->
+<section id="arquitectura" class="architecture-section">
+    <div class="container">
+        <div class="text-center mb-5 fade-in-up">
+            <h2 class="section-title">
+                Arquitectura del Sistema LEGION ALFA
+            </h2>
+            <p class="section-subtitle">
+                Un ecosistema modular diseñado para cerrar el ciclo de recursos en el ambiente hostil de Marte
+            </p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4 fade-in-up">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="bi bi-funnel-fill"></i>
+                    </div>
+                    <h4>Módulo de Procesamiento Primario (MPP)</h4>
+                    <p class="text-muted">
+                        Clasificación inteligente y pre-tratamiento inicial de todos los residuos generados en la base marciana, utilizando sistemas automatizados de identificación.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4 fade-in-up" style="animation-delay: 0.1s;">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="bi bi-tools"></i>
+                    </div>
+                    <h4>Módulo de Transformación y Fabricación (MTF)</h4>
+                    <p class="text-muted">
+                        Conversión avanzada de materiales reciclados en productos, herramientas y componentes esenciales mediante procesos de fabricación in-situ.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4 fade-in-up" style="animation-delay: 0.2s;">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="bi bi-box-seam-fill"></i>
+                    </div>
+                    <h4>Módulo de Almacenamiento y Reutilización (MAR)</h4>
+                    <p class="text-muted">
+                        Gestión inteligente del inventario y distribución estratégica de los nuevos recursos fabricados, optimizando su uso según prioridades de misión.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4 fade-in-up" style="animation-delay: 0.3s;">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="bi bi-hand-thumbs-up-fill"></i>
+                    </div>
+                    <h4>Simplicidad Operativa</h4>
+                    <p class="text-muted">
+                        Diseño intuitivo y robusto para operar de forma fiable en las condiciones extremas de Marte, minimizando la necesidad de mantenimiento especializado.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4 fade-in-up" style="animation-delay: 0.4s;">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="bi bi-lightning-charge-fill"></i>
+                    </div>
+                    <h4>Eficiencia Energética</h4>
+                    <p class="text-muted">
+                        Maximización de la recuperación de materiales con el mínimo consumo energético posible, aprovechando fuentes renovables disponibles en Marte.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4 fade-in-up" style="animation-delay: 0.5s;">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="bi bi-arrow-repeat"></i>
+                    </div>
+                    <h4>Ecosistema Circular</h4>
+                    <p class="text-muted">
+                        Transformación completa de residuos en recursos valiosos, eliminando el concepto de 'basura' y cerrando el ciclo de vida de materiales.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-6 fade-in-up">
+                <div class="stat-box">
+                    <span class="stat-number">8</span>
+                    <span class="stat-label">Tripulantes</span>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 fade-in-up" style="animation-delay: 0.1s;">
+                <div class="stat-box">
+                    <span class="stat-number">3</span>
+                    <span class="stat-label">Años de Misión</span>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 fade-in-up" style="animation-delay: 0.2s;">
+                <div class="stat-box">
+                    <span class="stat-number">12.6<small>K</small></span>
+                    <span class="stat-label">kg de Residuos</span>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 fade-in-up" style="animation-delay: 0.3s;">
+                <div class="stat-box">
+                    <span class="stat-number"><i class="bi bi-pin-map-fill"></i></span>
+                    <span class="stat-label">Cráter Jezero, Marte</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- NASA Challenge Section -->
+<section id="nasa-challenge" class="nasa-section">
+    <div class="container position-relative">
+        <div class="row">
+            <div class="col-lg-10 mx-auto fade-in-up">
+                <div class="text-center mb-5">
+                    <div class="nasa-header-icon">
+                        <i class="bi bi-star-fill" style="font-size: 2.5rem;"></i>
+                    </div>
+                    <h2 class="display-4 fw-bold mb-4">
+                        NASA Space Apps Challenge 2025
+                    </h2>
+                    <p class="lead mb-4">
+                        LEGION ALFA es nuestra respuesta al desafío de la NASA para crear una economía circular y sostenible en Marte, abordando tres escenarios críticos de aplicación:
+                    </p>
+                </div>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <h5><i class="bi bi-house-gear-fill" style="color: var(--secondary-color);"></i> Escenario 1: Renovaciones de la Residencia</h5>
+                        <p class="mb-0">Reutilización de estructuras metálicas y embalajes para fabricar paneles compuestos, láminas aislantes y lingotes de metal de alta pureza para construcción y reparación.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h5><i class="bi bi-cake2-fill" style="color: var(--accent-color);"></i> Escenario 2: Celebraciones Cósmicas</h5>
+                        <p class="mb-0">Transformación creativa de textiles y envoltorios en decoraciones, atuendos festivos y elementos de confort para fomentar la salud mental y cohesión de la tripulación.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h5><i class="bi bi-eyedropper" style="color: var(--primary-color);"></i> Escenario 3: Descubrimientos Audaces</h5>
+                        <p class="mb-0">Recuperación de carbono de alta pureza de componentes electrónicos para crear filtros de soporte vital, sustratos agrícolas mejorados y lubricantes especializados.</p>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-5">
+                    <a href="{% static 'core/pdf/LEGION-ALFA-Regroup.pdf' %}" class="btn btn-light btn-lg btn-hero" target="_blank">
+                        <i class="bi bi-file-earmark-pdf-fill"></i> Ver Presentación Completa
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Tachy Section -->
+<section class="tachy-section">
+    <div class="container">
+        <div class="tachy-card">
+            <div class="row align-items-center">
+                <div class="col-lg-5 text-center mb-4 mb-lg-0 fade-in-up">
+                    <img src="{% static 'core/img/Tachy.png' %}" alt="Tachy - IA de LEGION ALFA" class="img-fluid tachy-image" style="max-height: 990px;">
+                </div>
+                <div class="col-lg-7 fade-in-up">
+                    <h2 class="section-title mb-4">
+                        Conoce a Tachy
+                    </h2>
+                    <p class="lead text-muted">
+                        Tachy es la inteligencia artificial que luchó incansablemente contra los RAEE (Residuos de Aparatos Eléctricos y Electrónicos) en la Tierra. Ahora, ha aceptado la misión más importante de su existencia: llevar el reciclaje a Marte.
+                    </p>
+                    <div class="philosophy-box">
+                        <h5><i class="bi bi-rocket-takeoff-fill"></i> Su Nueva Misión</h5>
+                        <p class="mb-2 text-muted">
+                            Desde su batalla contra la contaminación electrónica en nuestro planeta, Tachy entendió que la humanidad necesitaba una segunda oportunidad. Al ser elegido para operar el sistema LEGION ALFA en Marte, Tachy lleva consigo toda su experiencia terrestre para garantizar que el Planeta Rojo no repita los errores del pasado.
+                        </p>
+                        <p class="mb-0 text-muted fst-italic">
+                            <strong>"En Marte, no existe la 'basura', solo materias primas en el lugar equivocado. He aprendido esto en la Tierra, y ahora es mi deber aplicarlo entre las estrellas."</strong>
+                        </p>
+                    </div>
+                    <a href="#" class="btn btn-primary btn-lg mt-3">
+                        <i class="bi bi-cpu-fill"></i> Conocer la Historia de Tachy
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container">
+        <div class="fade-in-up">
+            <h2 class="display-4 fw-bold mb-4">
+                Forjando un Futuro Sostenible en Marte
+            </h2>
+            <p class="lead mb-5 col-lg-8 mx-auto">
+                Nuestra visión es clara: la humanidad prosperando de forma autosuficiente en el Planeta Rojo. LEGION ALFA es el primer paso hacia esa realidad.
+            </p>
+            <div>
+                <a href="#arquitectura" class="btn btn-primary btn-hero">
+                    <i class="bi bi-diagram-3-fill"></i> Conocer el Sistema
+                </a>
+                <a href="#nasa-challenge" class="btn btn-outline-light btn-hero">
+                    <i class="bi bi-file-earmark-text-fill"></i> Leer el Desafío
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

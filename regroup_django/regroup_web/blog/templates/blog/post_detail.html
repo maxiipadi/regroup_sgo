@@ -1,0 +1,271 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ post.titulo }} - Blog REGroup{% endblock %}
+
+{% block content %}
+<style>
+    .post-header {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        color: white;
+        padding: 60px 0 40px;
+    }
+    
+    .post-image-large {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+        border-radius: 15px;
+        margin: 30px 0;
+    }
+    
+    .post-body {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: #334155;
+    }
+    
+    .post-body h2 {
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        font-weight: 700;
+    }
+    
+    .post-body p {
+        margin-bottom: 1.5rem;
+    }
+    
+    .author-box {
+        background: #f8fafc;
+        border-radius: 15px;
+        padding: 30px;
+        margin: 40px 0;
+        border-left: 5px solid #0ea5e9;
+    }
+    
+    .comment-box {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .comment-form {
+        background: #f8fafc;
+        border-radius: 15px;
+        padding: 30px;
+        margin-top: 30px;
+    }
+    
+    .share-buttons a {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        border-radius: 50%;
+        margin: 0 5px;
+        color: white;
+        transition: all 0.3s ease;
+    }
+    
+    .share-buttons a:hover {
+        transform: scale(1.1);
+    }
+    
+    .share-facebook { background: #1877f2; }
+    .share-twitter { background: #1da1f2; }
+    .share-whatsapp { background: #25d366; }
+    .share-linkedin { background: #0077b5; }
+</style>
+
+<!-- Post Header -->
+<section class="post-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                {% if post.categoria %}
+                <a href="{% url 'blog:categoria_posts' post.categoria.slug %}" class="badge bg-primary mb-3">
+                    {{ post.categoria.nombre }}
+                </a>
+                {% endif %}
+                
+                <h1 class="display-4 fw-bold mb-4">{{ post.titulo }}</h1>
+                
+                <div class="d-flex align-items-center flex-wrap">
+                    <div class="d-flex align-items-center me-4 mb-2">
+                        <i class="bi bi-person-circle me-2" style="font-size: 1.5rem;"></i>
+                        <div>
+                            <small class="d-block opacity-75">Autor</small>
+                            <strong>{{ post.autor.get_full_name }}</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex align-items-center me-4 mb-2">
+                        <i class="bi bi-calendar3 me-2" style="font-size: 1.5rem;"></i>
+                        <div>
+                            <small class="d-block opacity-75">Publicado</small>
+                            <strong>{{ post.fecha_publicacion|date:"d/m/Y" }}</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="bi bi-eye me-2" style="font-size: 1.5rem;"></i>
+                        <div>
+                            <small class="d-block opacity-75">Vistas</small>
+                            <strong>{{ post.vistas }}</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Post Content -->
+<article class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <!-- Imagen Destacada -->
+                {% if post.imagen_destacada %}
+                <img src="{{ post.imagen_destacada.url }}" 
+                     alt="{{ post.titulo }}" 
+                     class="post-image-large">
+                {% endif %}
+                
+                <!-- Resumen -->
+                <div class="alert alert-info border-0 mb-4">
+                    <h5 class="fw-bold"><i class="bi bi-info-circle"></i> Resumen</h5>
+                    <p class="mb-0">{{ post.resumen }}</p>
+                </div>
+                
+                <!-- Contenido -->
+                <div class="post-body">
+                    {{ post.contenido|linebreaks }}
+                </div>
+                
+                <!-- Share Buttons -->
+                <div class="my-5">
+                    <h5 class="fw-bold mb-3">Compartir este artículo:</h5>
+                    <div class="share-buttons">
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" 
+                           target="_blank" 
+                           class="share-facebook">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                        <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ post.titulo }}" 
+                           target="_blank" 
+                           class="share-twitter">
+                            <i class="bi bi-twitter"></i>
+                        </a>
+                        <a href="https://wa.me/?text={{ post.titulo }}%20{{ request.build_absolute_uri }}" 
+                           target="_blank" 
+                           class="share-whatsapp">
+                            <i class="bi bi-whatsapp"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/shareArticle?url={{ request.build_absolute_uri }}" 
+                           target="_blank" 
+                           class="share-linkedin">
+                            <i class="bi bi-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Author Box -->
+                <div class="author-box">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-person-circle text-primary" style="font-size: 4rem;"></i>
+                        <div class="ms-3">
+                            <h5 class="fw-bold mb-1">{{ post.autor.get_full_name }}</h5>
+                            <p class="text-muted mb-0">Miembro del equipo REGroup</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Comments Section -->
+                <div class="mt-5">
+                    <h3 class="fw-bold mb-4">
+                        <i class="bi bi-chat-dots"></i> Comentarios ({{ comentarios.count }})
+                    </h3>
+                    
+                    <!-- Existing Comments -->
+                    {% if comentarios %}
+                        {% for comentario in comentarios %}
+                        <div class="comment-box">
+                            <div class="d-flex justify-content-between mb-2">
+                                <h6 class="fw-bold mb-0">{{ comentario.nombre }}</h6>
+                                <small class="text-muted">{{ comentario.fecha|date:"d/m/Y H:i" }}</small>
+                            </div>
+                            <p class="mb-0">{{ comentario.contenido }}</p>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="alert alert-light">
+                            <i class="bi bi-chat"></i> Sé el primero en comentar este artículo.
+                        </div>
+                    {% endif %}
+                    
+                    <!-- Comment Form -->
+                    <div class="comment-form">
+                        <h5 class="fw-bold mb-4">Deja tu comentario</h5>
+                        
+                        {% if messages %}
+                            {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+                        
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Nombre *</label>
+                                <input type="text" name="nombre" class="form-control" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Email *</label>
+                                <input type="email" name="email" class="form-control" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Comentario *</label>
+                                <textarea name="contenido" class="form-control" rows="5" required></textarea>
+                            </div>
+                            
+                            <div class="alert alert-info">
+                                <small><i class="bi bi-info-circle"></i> Tu comentario será revisado antes de ser publicado.</small>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-send"></i> Enviar Comentario
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- Related Posts -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h3 class="fw-bold mb-4 text-center">Artículos Relacionados</h3>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <span class="badge bg-primary mb-2">Reciclaje</span>
+                        <h5 class="card-title">Próximamente más artículos</h5>
+                        <p class="card-text">Estamos trabajando en más contenido educativo.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

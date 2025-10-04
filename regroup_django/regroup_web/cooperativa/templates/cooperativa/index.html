@@ -1,0 +1,248 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Nuestra Historia - REGroup{% endblock %}
+
+{% block extra_css %}
+<style>
+    .team-header {
+        background-image: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.8)), url('{% static "core/img/team_background.jpg" %}');
+        background-size: cover;
+        background-position: center;
+        padding: 100px 0;
+        color: white;
+    }
+    .origin-story {
+        background: white;
+        border-radius: 15px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        margin-top: -80px;
+        position: relative;
+        z-index: 10;
+    }
+    .institution-logo {
+        max-height: 60px;
+        margin: 15px;
+        filter: grayscale(100%);
+        opacity: 0.6;
+        transition: all 0.3s ease;
+    }
+    .institution-logo:hover {
+        filter: grayscale(0%);
+        opacity: 1;
+    }
+    .valor-card {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        height: 100%;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+    .valor-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(139, 92, 246, 0.3);
+    }
+    .valor-icon {
+        font-size: 3.5rem;
+        color: #8b5cf6;
+        margin-bottom: 20px;
+    }
+    .miembro-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+    .miembro-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+    .miembro-foto {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .proyecto-card {
+        background: white;
+        border-radius: 10px;
+        padding: 25px;
+        height: 100%;
+        border-left: 5px solid #8b5cf6;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<section class="team-header text-center">
+    <div class="container">
+        <h1 class="display-3 fw-bold">Somos REGroup</h1>
+        <p class="lead col-lg-8 mx-auto">Un equipo de estudiantes de Santiago del Estero apasionados por usar la tecnología para construir un futuro sostenible.</p>
+    </div>
+</section>
+
+<section class="origin-story">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h2 class="fw-bold mb-4 text-primary">Nuestro Origen: Rally de Innovación 2025</h2>
+                <p class="lead">Nuestra historia comienza en el <strong>Rally de Innovación Santiago del Estero 2025</strong>. Allí, un grupo de estudiantes de la Tecnicatura Superior en Desarrollo de Software del <strong>ITSE</strong> y de Ingeniería de la <strong>UNSE</strong> nos unimos por un objetivo común: resolver problemas reales con soluciones creativas.</p>
+                <p>Esa experiencia fue la chispa que encendió REGroup. Decidimos continuar como equipo para transformar ideas en proyectos tangibles, formando una cooperativa para aplicar nuestro conocimiento a desafíos ambientales.</p>
+            </div>
+            <div class="col-lg-4 text-center">
+                <img src="{% static 'core/img/rally_foto.jpg' %}" class="img-fluid rounded" alt="Equipo en el Rally de Innovación">
+            </div>
+        </div>
+        <hr class="my-5">
+        <div class="text-center">
+            <h4 class="text-muted fw-light mb-4">Con el apoyo de nuestras casas de estudio</h4>
+            <div>
+                <img src="{% static 'core/img/logo_itse.png' %}" alt="Logo ITSE" class="institution-logo">
+                <img src="{% static 'core/img/logo_unse.png' %}" alt="Logo UNSE" class="institution-logo">
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center display-5 fw-bold mb-5">
+            Nuestra Misión
+        </h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="valor-card">
+                    <div class="valor-icon"><i class="bi bi-code-slash"></i></div>
+                    <h4 class="fw-bold">Desarrollo Tecnológico</h4>
+                    <p>Crear soluciones de software y hardware innovadoras para problemas ambientales complejos.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="valor-card">
+                    <div class="valor-icon"><i class="bi bi-people-fill"></i></div>
+                    <h4 class="fw-bold">Modelo Cooperativo</h4>
+                    <p>Fomentar un entorno de trabajo colaborativo, equitativo y enfocado en el impacto social.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="valor-card">
+                    <div class="valor-icon"><i class="bi bi-arrow-repeat"></i></div>
+                    <h4 class="fw-bold">Economía Circular</h4>
+                    <p>Diseñar sistemas que eliminen el concepto de "residuo", en la Tierra y más allá.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center display-5 fw-bold mb-5">
+            Miembros Fundadores
+        </h2>
+        <div class="row g-4">
+            {% for miembro in miembros_destacados %}
+            <div class="col-md-6 col-lg-4 d-flex align-items-stretch">
+                <div class="miembro-card">
+                    <div class="miembro-foto">
+                        {% if miembro.foto %}
+                            <img src="{{ miembro.foto.url }}" alt="{{ miembro.usuario.get_full_name }}">
+                        {% else %}
+                            <i class="bi bi-person-circle text-white" style="font-size: 8rem;"></i>
+                        {% endif %}
+                    </div>
+                    <div class="p-3">
+                        <h5 class="fw-bold mb-1">{{ miembro.usuario.get_full_name }}</h5>
+                        <p class="text-muted mb-2">{{ miembro.especialidad }}</p>
+                        <span class="badge bg-primary">{{ miembro.get_rol_display }}</span>
+                        {% if miembro.biografia %}
+                        <p class="mt-3 small">{{ miembro.biografia|truncatewords:20 }}</p>
+                        {% endif %}
+                        <a href="{% url 'cooperativa:miembro_detail' miembro.pk %}" class="btn btn-sm btn-outline-primary mt-2">
+                            Ver Perfil <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <div class="alert alert-info text-center">
+                    <i class="bi bi-info-circle"></i> Próximamente conocerás a nuestros miembros fundadores.
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-5">
+            <a href="{% url 'cooperativa:miembros_list' %}" class="btn btn-primary btn-lg">
+                <i class="bi bi-people"></i> Ver Todos los Miembros
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center display-5 fw-bold mb-5">
+            Nuestros Proyectos
+        </h2>
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="proyecto-card border-primary">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="fw-bold mb-0">Proyecto LEGION ALFA</h4>
+                        <span class="badge bg-primary"><i class="bi bi-rocket-takeoff"></i> NASA Challenge</span>
+                    </div>
+                    <p>Nuestra prueba de concepto: un sistema de reciclaje circular para la supervivencia en Marte, desarrollado para el NASA Space Apps Challenge 2025.</p>
+                    <a href="{% url 'nasa_project:index' %}" class="btn btn-primary mt-3">
+                        Conocer el Proyecto <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            
+            {% for proyecto in proyectos_activos %}
+            <div class="col-md-6">
+                <div class="proyecto-card">
+                    <h4 class="fw-bold mb-3">{{ proyecto.nombre }}</h4>
+                    <p>{{ proyecto.descripcion|truncatewords:30 }}</p>
+                    <a href="{% url 'cooperativa:proyecto_detail' proyecto.pk %}" class="btn btn-outline-primary mt-3">
+                        Ver Detalles <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-md-6">
+                <div class="proyecto-card">
+                    <h4 class="fw-bold mb-3">Planta de Reciclaje RAEE</h4>
+                    <p class="text-muted">Nuestro próximo gran proyecto terrenal. Actualmente en fase de planificación y búsqueda de socios estratégicos.</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-dark text-white">
+    <div class="container text-center">
+        <h2 class="display-5 fw-bold mb-4">
+            ¿Querés ser parte del cambio?
+        </h2>
+        <p class="lead mb-4">
+            Sumate a un modelo de trabajo digno, equitativo y sustentable.
+        </p>
+        <a href="{% url 'cooperativa:unirse' %}" class="btn btn-light btn-lg">
+            <i class="bi bi-person-plus-fill"></i> Solicitar Membresía
+        </a>
+    </div>
+</section>
+{% endblock %}

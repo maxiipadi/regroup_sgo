@@ -1,0 +1,257 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Blog Ambiental - REGroup{% endblock %}
+
+{% block content %}
+<style>
+    .hero-blog {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        color: white;
+        padding: 80px 0;
+    }
+    
+    .post-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        height: 100%;
+        transition: all 0.3s ease;
+    }
+    
+    .post-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    }
+    
+    .post-image {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .post-content {
+        padding: 25px;
+    }
+    
+    .post-meta {
+        font-size: 0.9rem;
+        color: #64748b;
+        margin-bottom: 15px;
+    }
+    
+    .categoria-badge {
+        background: #0ea5e9;
+        color: white;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        margin-bottom: 15px;
+    }
+    
+    .categoria-badge:hover {
+        background: #0284c7;
+        color: white;
+    }
+    
+    .sidebar-card {
+        background: white;
+        border-radius: 10px;
+        padding: 25px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+    
+    .categoria-item {
+        padding: 10px 0;
+        border-bottom: 1px solid #e2e8f0;
+        transition: all 0.3s ease;
+    }
+    
+    .categoria-item:last-child {
+        border-bottom: none;
+    }
+    
+    .categoria-item:hover {
+        padding-left: 10px;
+        color: #0ea5e9;
+    }
+    
+    .post-destacado {
+        background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+        color: white;
+        border-radius: 15px;
+        padding: 40px;
+        margin-bottom: 40px;
+    }
+</style>
+
+<!-- Hero -->
+<section class="hero-blog">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-3 fw-bold mb-4">
+                    <i class="bi bi-newspaper"></i> Blog Ambiental
+                </h1>
+                <p class="lead">
+                    Noticias, consejos y conocimiento sobre reciclaje electrónico y sostenibilidad
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Content -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Posts -->
+            <div class="col-lg-8">
+                {% if posts %}
+                    <!-- Post Destacado (primer post) -->
+                    {% with posts.0 as destacado %}
+                    <div class="post-destacado">
+                        <span class="badge bg-warning text-dark mb-3">
+                            <i class="bi bi-star-fill"></i> Post Destacado
+                        </span>
+                        <h2 class="display-5 fw-bold mb-3">{{ destacado.titulo }}</h2>
+                        <p class="lead mb-4">{{ destacado.resumen }}</p>
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-person-circle me-2"></i>
+                            <span>{{ destacado.autor.get_full_name }}</span>
+                            <span class="mx-3">•</span>
+                            <i class="bi bi-calendar me-2"></i>
+                            <span>{{ destacado.fecha_publicacion|date:"d/m/Y" }}</span>
+                            <span class="mx-3">•</span>
+                            <i class="bi bi-eye me-2"></i>
+                            <span>{{ destacado.vistas }} vistas</span>
+                        </div>
+                        <a href="{% url 'blog:post_detail' destacado.slug %}" class="btn btn-light btn-lg">
+                            Leer Más <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                    {% endwith %}
+                    
+                    <!-- Grid de Posts -->
+                    <div class="row g-4">
+                        {% for post in posts|slice:"1:" %}
+                        <div class="col-md-6">
+                            <article class="post-card">
+                                <div class="post-image">
+                                    {% if post.imagen_destacada %}
+                                        <img src="{{ post.imagen_destacada.url }}" alt="{{ post.titulo }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                    {% else %}
+                                        <i class="bi bi-file-earmark-text text-white" style="font-size: 4rem;"></i>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="post-content">
+                                    {% if post.categoria %}
+                                    <a href="{% url 'blog:categoria_posts' post.categoria.slug %}" class="categoria-badge">
+                                        {{ post.categoria.nombre }}
+                                    </a>
+                                    {% endif %}
+                                    
+                                    <h4 class="fw-bold mb-3">
+                                        <a href="{% url 'blog:post_detail' post.slug %}" class="text-dark text-decoration-none">
+                                            {{ post.titulo }}
+                                        </a>
+                                    </h4>
+                                    
+                                    <p class="text-muted">{{ post.resumen|truncatewords:20 }}</p>
+                                    
+                                    <div class="post-meta">
+                                        <i class="bi bi-person"></i> {{ post.autor.get_full_name }}
+                                        <span class="mx-2">•</span>
+                                        <i class="bi bi-calendar"></i> {{ post.fecha_publicacion|date:"d/m/Y" }}
+                                    </div>
+                                    
+                                    <a href="{% url 'blog:post_detail' post.slug %}" class="btn btn-outline-primary">
+                                        Leer Más <i class="bi bi-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </article>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle"></i> No hay posts publicados todavía. ¡Vuelve pronto!
+                    </div>
+                {% endif %}
+            </div>
+            
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <!-- Categorías -->
+                <div class="sidebar-card">
+                    <h5 class="fw-bold mb-4">
+                        <i class="bi bi-tags-fill"></i> Categorías
+                    </h5>
+                    {% if categorias %}
+                        {% for categoria in categorias %}
+                        <div class="categoria-item">
+                            <a href="{% url 'blog:categoria_posts' categoria.slug %}" class="text-dark text-decoration-none d-flex justify-content-between">
+                                <span>{{ categoria.nombre }}</span>
+                                <span class="badge bg-primary">{{ categoria.posts.count }}</span>
+                            </a>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted">No hay categorías disponibles.</p>
+                    {% endif %}
+                </div>
+                
+                <!-- Posts Populares -->
+                <div class="sidebar-card">
+                    <h5 class="fw-bold mb-4">
+                        <i class="bi bi-fire"></i> Posts Populares
+                    </h5>
+                    {% for post in posts|slice:":5" %}
+                    <div class="mb-3 pb-3 {% if not forloop.last %}border-bottom{% endif %}">
+                        <a href="{% url 'blog:post_detail' post.slug %}" class="text-dark text-decoration-none">
+                            <h6 class="fw-bold mb-2">{{ post.titulo|truncatewords:8 }}</h6>
+                        </a>
+                        <small class="text-muted">
+                            <i class="bi bi-eye"></i> {{ post.vistas }} vistas
+                        </small>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <!-- Newsletter -->
+                <div class="sidebar-card bg-primary text-white">
+                    <h5 class="fw-bold mb-3">
+                        <i class="bi bi-envelope-fill"></i> Newsletter
+                    </h5>
+                    <p>Recibí las últimas noticias sobre reciclaje y sostenibilidad.</p>
+                    <form>
+                        <input type="email" class="form-control mb-2" placeholder="Tu email">
+                        <button type="submit" class="btn btn-light w-100">
+                            Suscribirse
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Info -->
+                <div class="sidebar-card bg-light">
+                    <h5 class="fw-bold mb-3">
+                        <i class="bi bi-info-circle-fill"></i> Sobre el Blog
+                    </h5>
+                    <p class="small">
+                        En este espacio compartimos conocimiento, experiencias y noticias sobre el reciclaje de RAEE y la economía circular.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

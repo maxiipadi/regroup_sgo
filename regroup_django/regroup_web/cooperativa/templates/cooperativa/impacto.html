@@ -1,0 +1,330 @@
+{% extends 'core/base.html' %} 
+
+{% block title %}Impacto Ambiental - REGroup{%endblock %} 
+
+{% block content %}
+<style>
+  .hero-impacto {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    padding: 80px 0;
+  }
+
+  .stat-big {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    height: 100%;
+  }
+
+  .stat-number-big {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: #10b981;
+    display: block;
+  }
+
+  .stat-label-big {
+    font-size: 1.2rem;
+    color: #64748b;
+    margin-top: 10px;
+  }
+
+  .timeline-vertical {
+    position: relative;
+    padding: 20px 0;
+  }
+
+  .timeline-vertical::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: #e2e8f0;
+  }
+
+  .timeline-item-v {
+    position: relative;
+    margin-bottom: 30px;
+  }
+
+  .timeline-content {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 45%;
+  }
+
+  .timeline-item-v:nth-child(odd) .timeline-content {
+    margin-left: 55%;
+  }
+
+  .timeline-item-v:nth-child(even) .timeline-content {
+    margin-right: 55%;
+    margin-left: auto;
+  }
+
+  .timeline-dot {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 20px;
+    background: #10b981;
+    border-radius: 50%;
+    border: 4px solid white;
+    box-shadow: 0 0 0 4px #10b981;
+  }
+
+  .impact-card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .impact-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  @media (max-width: 768px) {
+    .timeline-vertical::before {
+      left: 20px;
+    }
+
+    .timeline-item-v:nth-child(odd) .timeline-content,
+    .timeline-item-v:nth-child(even) .timeline-content {
+      width: calc(100% - 50px);
+      margin-left: 50px;
+    }
+
+    .timeline-dot {
+      left: 20px;
+    }
+  }
+</style>
+
+<!-- Hero -->
+<section class="hero-impacto">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <h1 class="display-3 fw-bold mb-4">
+          <i class="bi bi-graph-up-arrow"></i> Nuestro Impacto
+        </h1>
+        <p class="lead">
+          Medimos y compartimos transparentemente el impacto ambiental y social
+          de nuestro trabajo cooperativo.
+        </p>
+      </div>
+      <div class="col-lg-4 text-center">
+        <i class="bi bi-tree" style="font-size: 10rem; opacity: 0.3"></i>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Estadísticas Totales -->
+<section class="py-5">
+  <div class="container">
+    <h2 class="text-center display-5 fw-bold mb-5">Impacto Acumulado</h2>
+
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-3">
+        <div class="stat-big">
+          <i class="bi bi-recycle text-success" style="font-size: 3rem"></i>
+          <span class="stat-number-big"
+            >{{ total_toneladas|floatformat:1 }}</span
+          >
+          <span class="stat-label-big">Toneladas Recicladas</span>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3">
+        <div class="stat-big">
+          <i class="bi bi-cloud text-info" style="font-size: 3rem"></i>
+          <span class="stat-number-big">{{ total_co2|floatformat:1 }}</span>
+          <span class="stat-label-big">Toneladas CO₂ Evitadas</span>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3">
+        <div class="stat-big">
+          <i class="bi bi-phone text-primary" style="font-size: 3rem"></i>
+          <span class="stat-number-big">{{ total_dispositivos }}</span>
+          <span class="stat-label-big">Dispositivos Procesados</span>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3">
+        <div class="stat-big">
+          <i class="bi bi-people text-warning" style="font-size: 3rem"></i>
+          <span class="stat-number-big"
+            >{{ impactos.0.empleos_generados|default:0 }}</span
+          >
+          <span class="stat-label-big">Empleos Generados</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Equivalencias -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <h2 class="text-center display-5 fw-bold mb-5">¿Qué significa esto?</h2>
+
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="text-center">
+          <i class="bi bi-tree-fill text-success" style="font-size: 4rem"></i>
+          <h4 class="fw-bold mt-3">🌳 Equivale a plantar</h4>
+          <p class="lead">{{ arboles_plantados }} árboles</p>
+          <p class="text-muted">Basado en el CO₂ evitado</p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="text-center">
+          <i
+            class="bi bi-car-front-fill text-primary"
+            style="font-size: 4rem"
+          ></i>
+          <h4 class="fw-bold mt-3">🚗 Equivale a</h4>
+          <p class="lead">
+            <p class="lead">{{ km_no_recorridos }} km no recorridos</p>          </p>
+          <p class="text-muted">En emisiones de un auto promedio</p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="text-center">
+          <i class="bi bi-house-fill text-warning" style="font-size: 4rem"></i>
+          <h4 class="fw-bold mt-3">🏠 Energía para</h4>
+          <p class="lead">
+            <p class="lead">{{ hogares_mes }} hogares/mes</p>          </p>
+          <p class="text-muted">Basado en materiales reciclados</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Timeline de Impacto -->
+<section class="py-5">
+  <div class="container">
+    <h2 class="text-center display-5 fw-bold mb-5">Evolución Mensual</h2>
+
+    {% if impactos %}
+    <div class="timeline-vertical">
+      {% for impacto in impactos %}
+      <div class="timeline-item-v">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <h5 class="fw-bold text-success">
+            <i class="bi bi-calendar3"></i> {{ impacto.fecha|date:"F Y" }}
+          </h5>
+
+          <div class="row mt-3">
+            <div class="col-6">
+              <p class="mb-1"><strong>♻️ Recicladas:</strong></p>
+              <p class="text-muted">{{ impacto.toneladas_recicladas }} ton</p>
+            </div>
+            <div class="col-6">
+              <p class="mb-1"><strong>☁️ CO₂ Evitado:</strong></p>
+              <p class="text-muted">{{ impacto.co2_evitado }} ton</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-6">
+              <p class="mb-1"><strong>📱 Dispositivos:</strong></p>
+              <p class="text-muted">{{ impacto.dispositivos_procesados }}</p>
+            </div>
+            <div class="col-6">
+              <p class="mb-1"><strong>👥 Empleos:</strong></p>
+              <p class="text-muted">{{ impacto.empleos_generados }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center">
+      <i class="bi bi-info-circle"></i> Próximamente publicaremos los datos de
+      impacto mensual.
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Certificaciones -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <h2 class="text-center display-5 fw-bold mb-5">
+      Certificaciones y Reconocimientos
+    </h2>
+
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="impact-card text-center">
+          <i class="bi bi-award-fill text-warning" style="font-size: 4rem"></i>
+          <h5 class="fw-bold mt-3">ISO 14001</h5>
+          <p class="text-muted">Gestión Ambiental Certificada</p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="impact-card text-center">
+          <i
+            class="bi bi-shield-check text-success"
+            style="font-size: 4rem"
+          ></i>
+          <h5 class="fw-bold mt-3">Certificación RAEE</h5>
+          <p class="text-muted">Autorizada para tratamiento de RAEE</p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="impact-card text-center">
+          <i class="bi bi-star-fill text-primary" style="font-size: 4rem"></i>
+          <h5 class="fw-bold mt-3">B Corp Pending</h5>
+          <p class="text-muted">En proceso de certificación</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Transparencia -->
+<section class="py-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto text-center">
+        <h2 class="display-5 fw-bold mb-4">
+          <i class="bi bi-file-earmark-text"></i> Compromiso con la
+          Transparencia
+        </h2>
+        <p class="lead mb-4">
+          Publicamos informes trimestrales detallados sobre nuestro impacto
+          ambiental y social.
+        </p>
+        <a href="#" class="btn btn-primary btn-lg me-2">
+          <i class="bi bi-download"></i> Descargar Último Informe
+        </a>
+        <a href="#" class="btn btn-outline-primary btn-lg">
+          <i class="bi bi-folder"></i> Ver Todos los Informes
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
