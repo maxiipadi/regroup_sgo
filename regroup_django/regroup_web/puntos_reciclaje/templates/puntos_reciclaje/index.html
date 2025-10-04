@@ -1,0 +1,119 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Puntos de Reciclaje - REGroup{% endblock %}
+
+{% block content %}
+<style>
+    .hero-puntos {
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        color: white;
+        padding: 80px 0;
+    }
+    
+    .search-box {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        margin-top: -50px;
+        position: relative;
+        z-index: 10;
+    }
+    
+    .punto-card {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        height: 100%;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        border-top: 4px solid #f59e0b;
+    }
+    
+    .punto-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+    
+    .tipo-badge {
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        display: inline-block;
+    }
+    
+    .tipo-centro { background: #10b981; color: white; }
+    .tipo-movil { background: #3b82f6; color: white; }
+    .tipo-comercio { background: #f59e0b; color: white; }
+    .tipo-cooperativa { background: #8b5cf6; color: white; }
+    
+    .info-item {
+        margin-bottom: 15px;
+        padding-left: 30px;
+        position: relative;
+    }
+    
+    .info-item i {
+        position: absolute;
+        left: 0;
+        top: 2px;
+        color: #f59e0b;
+    }
+</style>
+
+<!-- Hero -->
+<section class="hero-puntos">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-3 fw-bold mb-4">
+                    <i class="bi bi-geo-alt-fill"></i> Puntos de Reciclaje
+                </h1>
+                <p class="lead">
+                    Encontrá el punto más cercano para llevar tus dispositivos electrónicos en desuso
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Search Box -->
+<section>
+    <div class="container">
+        <div class="search-box">
+            <form method="get" action="">
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">
+                            <i class="bi bi-search"></i> Buscar por ciudad
+                        </label>
+                        <input type="text" 
+                               name="ciudad" 
+                               class="form-control form-control-lg" 
+                               placeholder="Ej: Santiago del Estero"
+                               value="{{ request.GET.ciudad }}">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">
+                            <i class="bi bi-funnel"></i> Tipo de punto
+                        </label>
+                        <select name="tipo" class="form-select form-select-lg">
+                            <option value="">Todos los tipos</option>
+                            <option value="centro" {% if request.GET.tipo == 'centro' %}selected{% endif %}>Centros de Acopio</option>
+                            <option value="movil" {% if request.GET.tipo == 'movil' %}selected{% endif %}>Puntos Móviles</option>
+                            <option value="comercio" {% if request.GET.tipo == 'comercio' %}selected{% endif %}>Comercios</option>
+                            <option value="cooperativa" {% if request.GET.tipo == 'cooperativa' %}selected{% endif %}>Cooperativas</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-search"></i> Buscar
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

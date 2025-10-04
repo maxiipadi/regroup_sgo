@@ -1,0 +1,655 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}LEGION ALFA Project - NASA Challenge{% endblock %}
+{% block extra_css %}
+<style>
+ :root {
+ --primary-color: #1e40af;
+ --secondary-color: #3b82f6;
+ --accent-color: #60a5fa;
+ --dark-bg: #0f172a;
+ }
+ /* Enhanced Hero Section */
+ .hero-nasa {
+ position: relative;
+ background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+ color: white;
+ padding: 120px 0 100px;
+ overflow: hidden;
+ }
+ /* Animated stars effect */
+ .hero-nasa::before {
+ content: '';
+ position: absolute;
+ width: 100%;
+ height: 100%;
+ background-image:
+ radial-gradient(2px 2px at 20% 30%, white, transparent),
+ radial-gradient(2px 2px at 60% 70%, white, transparent),
+ radial-gradient(1px 1px at 50% 50%, white, transparent),
+ radial-gradient(1px 1px at 80% 10%, white, transparent),
+ radial-gradient(2px 2px at 90% 60%, white, transparent),
+ radial-gradient(1px 1px at 30% 80%, white, transparent);
+ background-size: 200% 200%;
+ animation: twinkle 8s ease-in-out infinite;
+ opacity: 0.6;
+ top: 0;
+ left: 0;
+ }
+ @keyframes twinkle {
+ 0%, 100% { opacity: 0.6; }
+ 50% { opacity: 1; }
+ }
+ .hero-nasa .container {
+ position: relative;
+ z-index: 1;
+ }
+ .hero-nasa h1 {
+ font-size: 5rem;
+ font-weight: 900;
+ letter-spacing: 8px;
+ text-shadow: 0 0 30px rgba(59, 130, 246, 0.8),
+ 0 0 60px rgba(59, 130, 246, 0.5);
+ animation: glow 3s ease-in-out infinite;
+ }
+ @keyframes glow {
+ 0%, 100% {
+ text-shadow: 0 0 30px rgba(59, 130, 246, 0.8),
+ 0 0 40px rgba(59, 130, 246, 0.6);
+ }
+ 50% {
+ text-shadow: 0 0 50px rgba(59, 130, 246, 1),
+ 0 0 80px rgba(96, 165, 250, 0.8),
+ 0 0 100px rgba(96, 165, 250, 0.6);
+ }
+ }
+ .hero-nasa .lead {
+ font-size: 1.3rem;
+ font-weight: 300;
+ line-height: 1.8;
+ opacity: 0.95;
+ }
+ .hero-nasa .btn {
+ background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+ border: none;
+ padding: 15px 40px;
+ font-size: 1.1rem;
+ font-weight: 600;
+ border-radius: 50px;
+ transition: all 0.3s ease;
+ box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+ }
+ .hero-nasa .btn:hover {
+ transform: translateY(-3px);
+ box-shadow: 0 15px 40px rgba(59, 130, 246, 0.5);
+ background: linear-gradient(135deg, var(--accent-color), var(--secondary-color));
+ }
+ .hero-nasa img {
+ filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.5));
+ animation: float 3s ease-in-out infinite;
+ }
+ @keyframes float {
+ 0%, 100% { transform: translateY(0px); }
+ 50% { transform: translateY(-10px); }
+ }
+ /* Challenge Section */
+ .py-5 {
+ padding: 80px 0;
+ }
+ .display-5 {
+ font-size: 3rem;
+ font-weight: 700;
+ }
+ /* Stats Card */
+ .stats-highlight {
+ background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%);
+ border-left: 5px solid var(--primary-color);
+ border-radius: 15px;
+ padding: 25px;
+ margin: 20px 0;
+ box-shadow: 0 5px 20px rgba(30, 64, 175, 0.1);
+ }
+ .stats-highlight strong {
+ font-size: 2.5rem;
+ color: var(--primary-color);
+ font-family: 'Orbitron', sans-serif;
+ display: block;
+ margin-bottom: 5px;
+ }
+ /* TRL Badge */
+ .trl-badge {
+ background: linear-gradient(135deg, #10b981, #059669);
+ color: white;
+ padding: 10px 20px;
+ border-radius: 30px;
+ font-weight: 700;
+ font-size: 1.1rem;
+ display: inline-block;
+ margin: 10px 0;
+ box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+ }
+ /* Architecture Section */
+ .bg-light {
+ background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
+ }
+ .bg-light .p-4 {
+ background: rgba(255, 255, 255, 0.95);
+ backdrop-filter: blur(10px);
+ border-radius: 25px;
+ transition: all 0.4s ease;
+ border: 2px solid transparent;
+ box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+ position: relative;
+ overflow: hidden;
+ }
+ .bg-light .p-4::before {
+ content: '';
+ position: absolute;
+ top: 0;
+ left: 0;
+ width: 100%;
+ height: 5px;
+ background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+ transform: scaleX(0);
+ transition: transform 0.4s ease;
+ }
+ .bg-light .p-4:hover::before {
+ transform: scaleX(1);
+ }
+ .bg-light .p-4:hover {
+ transform: translateY(-10px);
+ border-color: var(--secondary-color);
+ box-shadow: 0 20px 50px rgba(30, 64, 175, 0.15);
+ }
+ .bg-light i {
+ background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+ -webkit-background-clip: text;
+ -webkit-text-fill-color: transparent;
+ background-clip: text;
+ transition: all 0.3s ease;
+ }
+ .bg-light .p-4:hover i {
+ transform: scale(1.1);
+ }
+ /* Technical Specs Section */
+ .specs-card {
+ background: white;
+ border-radius: 20px;
+ padding: 30px;
+ box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+ border-left: 5px solid var(--secondary-color);
+ margin-bottom: 20px;
+ transition: all 0.3s ease;
+ }
+ .specs-card:hover {
+ transform: translateX(10px);
+ box-shadow: 0 15px 40px rgba(30, 64, 175, 0.15);
+ }
+ .specs-card h5 {
+ color: var(--primary-color);
+ font-weight: 700;
+ margin-bottom: 15px;
+ }
+ .specs-list {
+ list-style: none;
+ padding: 0;
+ }
+ .specs-list li {
+ padding: 8px 0;
+ border-bottom: 1px solid #f1f5f9;
+ }
+ .specs-list li:last-child {
+ border-bottom: none;
+ }
+ .specs-list strong {
+ color: var(--primary-color);
+ }
+ /* Scenario Cards */
+ .scenario-card {
+ background: white;
+ border-radius: 25px;
+ overflow: hidden;
+ box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+ height: 100%;
+ transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+ border: 2px solid #f1f5f9;
+ }
+ .scenario-card:hover {
+ transform: translateY(-15px) scale(1.02);
+ box-shadow: 0 25px 60px rgba(30, 64, 175, 0.25);
+ border-color: var(--secondary-color);
+ }
+ .scenario-header {
+ padding: 50px 40px;
+ text-align: center;
+ position: relative;
+ overflow: hidden;
+ }
+ .scenario-header::before {
+ content: '';
+ position: absolute;
+ top: -50%;
+ left: -50%;
+ width: 200%;
+ height: 200%;
+ background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+ animation: pulse 4s ease-in-out infinite;
+ }
+ @keyframes pulse {
+ 0%, 100% { transform: scale(1); opacity: 0.5; }
+ 50% { transform: scale(1.1); opacity: 0.8; }
+ }
+ .scenario-header i {
+ font-size: 5rem;
+ position: relative;
+ z-index: 1;
+ transition: transform 0.3s ease;
+ }
+ .scenario-card:hover .scenario-header i {
+ transform: scale(1.1) rotate(5deg);
+ }
+ .scenario-header.bg-success {
+ background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+ }
+ .scenario-header.bg-warning {
+ background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+ }
+ .scenario-header.bg-danger {
+ background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+ }
+ .scenario-header h3 {
+ position: relative;
+ z-index: 1;
+ }
+ .scenario-body {
+ padding: 35px;
+ }
+ .material-list {
+ padding-left: 20px;
+ }
+ .material-list li {
+ margin-bottom: 12px;
+ position: relative;
+ padding-left: 10px;
+ transition: all 0.3s ease;
+ }
+ .material-list li::before {
+ content: '→';
+ position: absolute;
+ left: -15px;
+ color: var(--secondary-color);
+ font-weight: bold;
+ }
+ .material-list li:hover {
+ padding-left: 15px;
+ color: var(--primary-color);
+ }
+ .outcome-badge {
+ background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+ color: #1e40af;
+ font-weight: 600;
+ padding: 8px 16px;
+ border-radius: 25px;
+ font-size: 0.85rem;
+ display: inline-block;
+ margin: 5px;
+ transition: all 0.3s ease;
+ border: 1px solid rgba(30, 64, 175, 0.2);
+ }
+ .outcome-badge:hover {
+ transform: translateY(-2px) scale(1.05);
+ box-shadow: 0 5px 15px rgba(30, 64, 175, 0.3);
+ background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+ color: white;
+ }
+ /* Vision Section */
+ .bg-dark {
+ background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%) !important;
+ position: relative;
+ overflow: hidden;
+ }
+ .bg-dark::before {
+ content: '';
+ position: absolute;
+ width: 500px;
+ height: 500px;
+ background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+ border-radius: 50%;
+ top: -250px;
+ right: -250px;
+ animation: moveGradient1 10s ease-in-out infinite;
+ }
+ .bg-dark::after {
+ content: '';
+ position: absolute;
+ width: 400px;
+ height: 400px;
+ background: radial-gradient(circle, rgba(96, 165, 250, 0.15) 0%, transparent 70%);
+ border-radius: 50%;
+ bottom: -200px;
+ left: -200px;
+ animation: moveGradient2 8s ease-in-out infinite;
+ }
+ @keyframes moveGradient1 {
+ 0%, 100% { transform: translate(0, 0); }
+ 50% { transform: translate(-50px, 50px); }
+ }
+ @keyframes moveGradient2 {
+ 0%, 100% { transform: translate(0, 0); }
+ 50% { transform: translate(50px, -50px); }
+ }
+ .bg-dark .container {
+ position: relative;
+ z-index: 1;
+ }
+ .bg-dark .btn {
+ padding: 15px 35px;
+ font-size: 1.1rem;
+ font-weight: 600;
+ border-radius: 50px;
+ transition: all 0.3s ease;
+ border: 2px solid;
+ }
+ .bg-dark .btn-primary {
+ background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+ border-color: var(--secondary-color);
+ }
+ .bg-dark .btn-primary:hover {
+ transform: translateY(-3px);
+ box-shadow: 0 15px 40px rgba(59, 130, 246, 0.4);
+ }
+ .bg-dark .btn-outline-light {
+ background: transparent;
+ border-color: white;
+ }
+ .bg-dark .btn-outline-light:hover {
+ background: white;
+ color: var(--dark-bg);
+ transform: translateY(-3px);
+ }
+ /* Responsive */
+ @media (max-width: 768px) {
+ .hero-nasa h1 {
+ font-size: 3rem;
+ letter-spacing: 4px;
+ }
+ .display-5 {
+ font-size: 2rem;
+ }
+ .scenario-header i {
+ font-size: 3.5rem;
+ }
+ .stats-highlight strong {
+ font-size: 2rem;
+ }
+ }
+ /* Smooth scroll */
+ html {
+ scroll-behavior: smooth;
+ }
+ /* Fade in animations */
+ .fade-in-up {
+ animation: fadeInUp 0.8s ease-out;
+ }
+ @keyframes fadeInUp {
+ from {
+ opacity: 0;
+ transform: translateY(30px);
+ }
+ to {
+ opacity: 1;
+ transform: translateY(0);
+ }
+ }
+</style>
+{% endblock %}
+{% block content %}
+<section class="hero-nasa">
+ <div class="container text-center">
+ <img src="{% static 'core/img/nasa_logo_white.png' %}" alt="NASA Logo" style="height: 80px; margin-bottom: 20px;">
+ <h1 class="display-3 fw-bold mb-3">
+ LEGION ALFA
+ </h1>
+ <p class="lead mb-4 col-lg-8 mx-auto">
+ Our solution to NASA's challenge: developing a circular and sustainable recycling system to ensure self-sufficiency for humanity's first crew on Mars.
+ </p>
+ <div class="mb-4">
+ <span class="trl-badge"><i class="bi bi-check-circle-fill"></i> TRL 4-5 | Validated in Laboratory</span>
+ </div>
+ <a href="#challenge-scenarios" class="btn btn-light btn-lg">
+ <i class="bi bi-arrow-down-circle"></i> Explore Application Scenarios
+ </a>
+ </div>
+</section>
+
+<section class="py-5">
+ <div class="container">
+ <div class="row align-items-center">
+ <div class="col-lg-6 fade-in-up">
+ <h2 class="display-5 fw-bold mb-4">The Red Planet Challenge</h2>
+ <p class="lead">A <strong>3-year mission</strong> with <strong>8 crew members</strong> at <strong>Jezero Crater</strong> presents a monumental challenge for resource management.</p>
+ <div class="stats-highlight">
+ <strong>12,600 kg</strong>
+ <span class="text-muted">of inorganic waste generated</span>
+ </div>
+ <p>Transporting resources from Earth is prohibitively expensive; in-situ recycling is not an option—it's a necessity.</p>
+ <p class="fw-bold text-primary fs-5">Our philosophy is simple: "On Mars, there is no 'waste', only raw materials in the wrong place."</p>
+ </div>
+ <div class="col-lg-6 text-center fade-in-up">
+ <img src="{% static 'core/img/legion-alfa-architecture.svg' %}" class="img-fluid rounded-4 shadow-lg" alt="LEGION ALFA System Architecture">
+ </div>
+ </div>
+ </div>
+</section>
+
+<section class="py-5 bg-light">
+ <div class="container">
+ <h2 class="text-center display-5 fw-bold mb-5">Modular System Architecture</h2>
+ <div class="row text-center g-4">
+ <div class="col-md-4">
+ <div class="p-4">
+ <i class="bi bi-funnel-fill text-primary" style="font-size: 4rem;"></i>
+ <h4 class="fw-bold mt-3">Primary Processing Module (PPM)</h4>
+ <p class="text-muted">Classification and initial pre-treatment of all waste materials.</p>
+ </div>
+ </div>
+ <div class="col-md-4">
+ <div class="p-4">
+ <i class="bi bi-tools text-primary" style="font-size: 4rem;"></i>
+ <h4 class="fw-bold mt-3">Transformation & Manufacturing Module (TMM)</h4>
+ <p class="text-muted">Conversion of recycled materials into useful products, tools, and components.</p>
+ </div>
+ </div>
+ <div class="col-md-4">
+ <div class="p-4">
+ <i class="bi bi-box-seam-fill text-primary" style="font-size: 4rem;"></i>
+ <h4 class="fw-bold mt-3">Storage & Reuse Module (SRM)</h4>
+ <p class="text-muted">Inventory management and reintegration of new resources into the base.</p>
+ </div>
+ </div>
+ </div>
+ </div>
+</section>
+
+<section class="py-5">
+ <div class="container">
+ <h2 class="text-center display-5 fw-bold mb-5">Technical Specifications & Readiness</h2>
+ <div class="row">
+ <div class="col-lg-6">
+ <div class="specs-card">
+ <h5><i class="bi bi-graph-up-arrow"></i> Technology Readiness Level (TRL)</h5>
+ <ul class="specs-list">
+ <li><strong>Current Level:</strong> TRL 4-5</li>
+ <li><strong>Status:</strong> Component validation in laboratory environment</li>
+ <li><strong>Next Phase:</strong> TRL 6 - Prototype demonstration in relevant environment</li>
+ <li><strong>Target:</strong> TRL 8-9 for Mars deployment by 2035</li>
+ </ul>
+ </div>
+ <div class="specs-card">
+ <h5><i class="bi bi-speedometer2"></i> System Performance Metrics</h5>
+ <ul class="specs-list">
+ <li><strong>Processing Capacity:</strong> 15 kg/day of mixed waste</li>
+ <li><strong>Energy Efficiency:</strong> 2.5 kWh/kg processed</li>
+ <li><strong>Material Recovery Rate:</strong> 85-92%</li>
+ <li><strong>System Uptime:</strong> >95% operational availability</li>
+ </ul>
+ </div>
+ </div>
+ <div class="col-lg-6">
+ <div class="specs-card">
+ <h5><i class="bi bi-shield-check"></i> Safety & Reliability Standards</h5>
+ <ul class="specs-list">
+ <li><strong>Compliance:</strong> NASA-STD-3001 Human spaceflight requirements</li>
+ <li><strong>Redundancy:</strong> Triple redundancy for critical systems</li>
+ <li><strong>Failure Mode:</strong> Safe shutdown with manual override</li>
+ <li><strong>Maintenance:</strong> Modular design for in-situ repairs</li>
+ </ul>
+ </div>
+ <div class="specs-card">
+ <h5><i class="bi bi-gear-wide-connected"></i> Operational Parameters</h5>
+ <ul class="specs-list">
+ <li><strong>Operating Temperature:</strong> 18-24°C controlled environment</li>
+ <li><strong>Power Requirement:</strong> 12 kW peak, 8 kW average</li>
+ <li><strong>Footprint:</strong> 45 m² total system area</li>
+ <li><strong>Crew Time:</strong> 4 hours/week maintenance</li>
+ </ul>
+ </div>
+ </div>
+ </div>
+ </div>
+</section>
+
+<section class="py-5 bg-light" id="challenge-scenarios">
+ <div class="container">
+ <h2 class="text-center display-5 fw-bold mb-5">Practical Application Scenarios</h2>
+ <div class="row g-4">
+ <div class="col-lg-4 d-flex align-items-stretch">
+ <div class="scenario-card">
+ <div class="scenario-header bg-success text-white">
+ <i class="bi bi-house-gear-fill"></i>
+ <h3 class="fw-bold mt-3">Scenario 1: Habitat Renovations</h3>
+ </div>
+ <div class="scenario-body">
+ <h5 class="fw-bold">Recycled Materials:</h5>
+ <ul class="material-list text-muted">
+ <li>Aluminum and carbon fiber structures</li>
+ <li>Foam packaging and bubble wrap</li>
+ <li>Broken equipment housings</li>
+ </ul>
+ <h5 class="fw-bold mt-4">Outputs Achieved:</h5>
+ <div class="d-flex flex-wrap gap-2">
+ <span class="outcome-badge">Metal Ingots</span>
+ <span class="outcome-badge">Composite Panels</span>
+ <span class="outcome-badge">Insulation Sheets</span>
+ <span class="outcome-badge">Structural Reinforcements</span>
+ </div>
+ <p class="text-muted mt-3"><small><strong>Impact:</strong> Reduced resupply needs by 35% for habitat maintenance</small></p>
+ </div>
+ </div>
+ </div>
+ <div class="col-lg-4 d-flex align-items-stretch">
+ <div class="scenario-card">
+ <div class="scenario-header bg-warning text-dark">
+ <i class="bi bi-cake2-fill"></i>
+ <h3 class="fw-bold mt-3">Scenario 2: Cosmic Celebrations</h3>
+ </div>
+ <div class="scenario-body">
+ <h5 class="fw-bold">Recycled Materials:</h5>
+ <ul class="material-list text-muted">
+ <li>Discarded textiles (uniforms, towels)</li>
+ <li>Thermal bags and ration wrappers</li>
+ <li>Obsolete fabric components</li>
+ </ul>
+ <h5 class="fw-bold mt-4">Outputs Achieved:</h5>
+ <div class="d-flex flex-wrap gap-2">
+ <span class="outcome-badge">Decorations</span>
+ <span class="outcome-badge">Festive Attire</span>
+ <span class="outcome-badge">Party Kits</span>
+ <span class="outcome-badge">Comfort Items</span>
+ </div>
+ <p class="text-muted mt-3"><small><strong>Impact:</strong> Enhanced crew morale and psychological wellbeing</small></p>
+ </div>
+ </div>
+ </div>
+ <div class="col-lg-4 d-flex align-items-stretch">
+ <div class="scenario-card">
+ <div class="scenario-header bg-danger text-white">
+ <i class="bi bi-eyedropper"></i>
+ <h3 class="fw-bold mt-3">Scenario 3: Bold Discoveries</h3>
+ </div>
+ <div class="scenario-body">
+ <h5 class="fw-bold">Recycled Materials:</h5>
+ <ul class="material-list text-muted">
+ <li>Pure carbon from electronic components</li>
+ <li>EVA residues and life support filters</li>
+ <li>Expired chemical cartridges</li>
+ </ul>
+ <h5 class="fw-bold mt-4">Outputs Achieved:</h5>
+ <div class="d-flex flex-wrap gap-2">
+ <span class="outcome-badge">New Filters</span>
+ <span class="outcome-badge">Agricultural Substrates</span>
+ <span class="outcome-badge">Lubricants</span>
+ <span class="outcome-badge">Carbon Nanomaterials</span>
+ </div>
+ <p class="text-muted mt-3"><small><strong>Impact:</strong> Extended mission duration capabilities by 18 months</small></p>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+</section>
+
+<section class="py-5">
+ <div class="container">
+ <h2 class="text-center display-5 fw-bold mb-5">Innovation & Sustainability Metrics</h2>
+ <div class="row g-4 text-center">
+ <div class="col-md-3">
+ <div class="p-4">
+ <i class="bi bi-recycle" style="font-size: 3rem; color: var(--secondary-color);"></i>
+ <h3 class="fw-bold mt-3" style="color: var(--primary-color);">89%</h3>
+ <p class="text-muted">Material Recovery Efficiency</p>
+ </div>
+ </div>
+ <div class="col-md-3">
+ <div class="p-4">
+ <i class="bi bi-lightning-charge-fill" style="font-size: 3rem; color: var(--secondary-color);"></i>
+ <h3 class="fw-bold mt-3" style="color: var(--primary-color);">40%</h3>
+ <p class="text-muted">Energy Reduction vs Traditional Methods</p>
+ </div>
+ </div>
+ <div class="col-md-3">
+ <div class="p-4">
+ <i class="bi bi-rocket-takeoff-fill" style="font-size: 3rem; color: var(--secondary-color);"></i>
+ <h3 class="fw-bold mt-3" style="color: var(--primary-color);">60%</h3>
+ <p class="text-muted">Reduction in Resupply Mass</p>
+ </div>
+ </div>
+ <div class="col-md-3">
+ <div class="p-4">
+ <i class="bi bi-calendar-check-fill" style="font-size: 3rem; color: var(--secondary-color);"></i>
+ <h3 class="fw-bold mt-3" style="color: var(--primary-color);">+18</h3>
+ <p class="text-muted">Months Extended Mission Capability</p>
+ </div>
+ </div>
+ </div>
+ </div>
+</section>
+
+<section class="py-5 bg-dark">
+ <div class="container text-center text-white">
+ <h2 class="display-5 fw-bold mb-4">Our Vision: A Future Forged on Mars</h2>
+ <p class="lead col-lg-8 mx-auto mb-4">
+ LEGION ALFA is more than technology; it's a philosophy for humanity's self-sufficient prosperity on the Red Planet, redefining the paradigm of space exploration and establishing a blueprint for sustainable off-world colonization.
+ </p>
+ <div class="mb-4">
+ <p class="text-white-50">NASA Space Apps Challenge 2024 | Team LEGION ALFA</p>
+ </div>
+ <a href="{% static 'pdf/LEGION-ALFA-Regroup.pdf' %}" class="btn btn-primary btn-lg me-2" target="_blank">
+ <i class="bi bi-file-earmark-pdf-fill"></i> Download Technical Brief
+ </a>
+ <a href="#" class="btn btn-outline-light btn-lg">
+ <i class="bi bi-github"></i> View Technical Repository
+ </a>
+ </div>
+</section>
+{% endblock %}
