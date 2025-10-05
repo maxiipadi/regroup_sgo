@@ -12,6 +12,15 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 
+import sys
+
+# BASE_DIR apunta a regroup_web/
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Agregamos la carpeta superior (regroup_sgo/) al PYTHONPATH
+sys.path.append(str(BASE_DIR.parent))
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -39,12 +48,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # --- Mis Apps ---
     'core', 
-    'raee_info',
     'cooperativa',
     'nasa_project',
     'puntos_reciclaje',
     'blog',
     'residuos_no_reciclables',
+
 ]
 
 MIDDLEWARE = [
