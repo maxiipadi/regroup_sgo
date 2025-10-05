@@ -480,10 +480,10 @@ function simular(tipo) {
     resultado.classList.add("d-none");
 
     const datos = mensajes[tipo];
-    titulo.innerHTML = <i class="bi bi-cpu me-2"></i> Simulación: ${datos.titulo};
-    texto.textContent = datos.texto;
-    icono.className = result-icon ${datos.icono};
-    icono.style.color = datos.color;
+   titulo.innerHTML = `<i class="bi bi-cpu me-2"></i> Simulación: ${datos.titulo}`;
+texto.textContent = datos.texto;
+icono.className = `result-icon bi ${datos.icono}`;
+icono.style.color = datos.color;
 
     modal.show();
 
