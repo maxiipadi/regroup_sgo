@@ -1,7 +1,5 @@
 # 🚀 LEGION ALFA - NASA Space Apps Challenge 2025
 
-![LEGION ALFA Logo](regroup_django/regroup_web/core/static/core/img/nasa_logo_white.png)
-
 ## 📋 Descripción del Proyecto
 
 **LEGION ALFA** es un sistema innovador de reciclaje circular diseñado para garantizar la autosuficiencia de la primera tripulación humana en Marte. Desarrollado como respuesta al NASA Space Apps Challenge 2025, nuestro proyecto transforma el concepto de "basura" en un banco de recursos vitales para la supervivencia.
