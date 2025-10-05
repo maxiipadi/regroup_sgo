@@ -392,6 +392,131 @@
                     </form>
                 </div>
             </div>
+
+            <!-- Vista de Proceso -->
+<div class="col-md-12">
+    <div class="treatment-card">
+        <i class="bi bi-diagram-3 card-icon" style="color: var(--cosmic-blue);"></i>
+        <h5>
+            <i class="bi bi-diagram-3 text-primary"></i> Vista de Proceso: Reciclaje de Residuos Inorgánicos
+        </h5>
+        <p>
+            <strong>Resumen Ejecutivo:</strong> Este informe describe el sistema de reciclaje de 12.600 kg de residuos inorgánicos durante una misión marciana de 3 años. Incluye procesos químicos, físicos y biotecnológicos, ecuaciones, diagramas y parámetros operativos.
+        </p>
+
+        <div class="accordion" id="procesoReciclaje">
+            <!-- Introducción -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="introHeading">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#introCollapse">
+                        1. Introducción
+                    </button>
+                </h2>
+                <div id="introCollapse" class="accordion-collapse collapse" data-bs-parent="#procesoReciclaje">
+                    <div class="accordion-body">
+                        El manejo de residuos inorgánicos es crítico para misiones de larga duración. Se propone un sistema integrado que transforma residuos en materias primas útiles mediante rutas metalúrgicas, poliméricas, compuestas y textiles.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Clasificación -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="clasificacionHeading">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#clasificacionCollapse">
+                        2. Clasificación de Residuos
+                    </button>
+                </h2>
+                <div id="clasificacionCollapse" class="accordion-collapse collapse" data-bs-parent="#procesoReciclaje">
+                    <div class="accordion-body">
+                        <ul>
+                            <li>Metales: 25% (~3150 kg)</li>
+                            <li>Polímeros y plásticos: 45% (~5670 kg)</li>
+                            <li>Textiles y celulosa: 15% (~1890 kg)</li>
+                            <li>Envases multicapa: 10% (~1260 kg)</li>
+                            <li>Otros (espumas, guantes): 5% (~630 kg)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Procesos Generales -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="procesosHeading">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#procesosCollapse">
+                        3. Procesos y Procedimientos Generales
+                    </button>
+                </h2>
+                <div id="procesosCollapse" class="accordion-collapse collapse" data-bs-parent="#procesoReciclaje">
+                    <div class="accordion-body">
+                        Recepción, clasificación, pretratamiento mecánico, rutas específicas por fracción y procesamiento secundario para obtener productos reutilizables.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Procesos Metalúrgicos -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="metalurgicosHeading">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#metalurgicosCollapse">
+                        4. Procesos Metalúrgicos
+                    </button>
+                </h2>
+                <div id="metalurgicosCollapse" class="accordion-collapse collapse" data-bs-parent="#procesoReciclaje">
+                    <div class="accordion-body">
+                        Fusión, refinado, colado y reacciones como:<br>
+                        Al₂O₃ + 3C → 2Al + 3CO<br>
+                        Fe₂O₃ + 3H₂ → 2Fe + 3H₂O
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla de Parámetros -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="tablaHeading">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#tablaCollapse">
+                        9. Tabla de Parámetros de Procesos
+                    </button>
+                </h2>
+                <div id="tablaCollapse" class="accordion-collapse collapse" data-bs-parent="#procesoReciclaje">
+                    <div class="accordion-body">
+                        <table class="table table-sm table-bordered text-center">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Material</th>
+                                    <th>Proceso</th>
+                                    <th>T (°C)</th>
+                                    <th>P (bar)</th>
+                                    <th>Objetivo/Salida</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Aluminio</td><td>Fusión/Refinado</td><td>600–800</td><td>1</td><td>Lingotes/Filamento</td></tr>
+                                <tr><td>PE / PET</td><td>Extrusión mecánica</td><td>180–260</td><td>1</td><td>Filamento/pellets</td></tr>
+                                <tr><td>Plásticos mixtos</td><td>Pirolisis</td><td>400–700</td><td>&lt;1</td><td>Aceite/Gas/Char</td></tr>
+                                <tr><td>CFRP</td><td>Solvolisis/Pirolisis</td><td>200–500</td><td>1–10</td><td>Fibras recuperadas</td></tr>
+                                <tr><td>Textiles</td><td>Hidrólisis</td><td>100–180</td><td>1–5</td><td>Azúcares / Paneles</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recomendaciones -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="recomendacionesHeading">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#recomendacionesCollapse">
+                        10. Discusión y Recomendaciones
+                    </button>
+                </h2>
+                <div id="recomendacionesCollapse" class="accordion-collapse collapse" data-bs-parent="#procesoReciclaje">
+                    <div class="accordion-body">
+                        Implementación modular, validación con ensayos, pruebas en Tierra y simulación de microgravedad.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
         </div>
     </div>
 </section>
