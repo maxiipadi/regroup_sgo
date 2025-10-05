@@ -1,6 +1,6 @@
 # 🚀 LEGION ALFA - NASA Space Apps Challenge 2025
 
-![LEGION ALFA Logo](core/static/core/img/nasa_logo_white.png)
+![LEGION ALFA Logo](regroup_web/core/static/core/img/nasa_logo_white.png)
 
 ## 📋 Descripción del Proyecto
 
