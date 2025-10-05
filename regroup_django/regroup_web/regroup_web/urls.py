@@ -27,6 +27,7 @@ urlpatterns = [
     path('nasa/', include('nasa_project.urls')),
     path('puntos/', include('puntos_reciclaje.urls')),
     path('blog/', include('blog.urls')),
+    path('residuos/', include('residuos_no_reciclables.urls')),
 ]
 
 # Servir archivos media en desarrollo

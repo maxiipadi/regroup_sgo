@@ -654,6 +654,65 @@
     </div>
 </section>
 
+<!-- Non-Recyclable Waste Section -->
+<section class="non-recyclable-section bg-secondary text-light py-5">
+    <div class="container">
+        <div class="text-center mb-5 fade-in-up">
+            <h2 class="section-title text-warning">
+                Residuos No Reciclables en Marte
+            </h2>
+            <p class="section-subtitle">
+                Un módulo crítico para la seguridad y sostenibilidad del sistema LEGION ALFA
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4 fade-in-up">
+                <div class="feature-card bg-dark text-light">
+                    <div class="feature-icon">
+                        <i class="bi bi-exclamation-triangle-fill text-warning"></i>
+                    </div>
+                    <h4>Materiales Peligrosos</h4>
+                    <p class="text-light">
+                        Sustancias que no pueden ser transformadas ni reutilizadas, como compuestos tóxicos o reactivos inestables.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4 fade-in-up" style="animation-delay: 0.1s;">
+                <div class="feature-card bg-dark text-light">
+                    <div class="feature-icon">
+                        <i class="bi bi-slash-circle text-warning"></i>
+                    </div>
+                    <h4>Limitaciones Tecnológicas</h4>
+                    <p class="text-light">
+                        Componentes que exceden la capacidad actual de procesamiento marciano y deben ser aislados o almacenados.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4 fade-in-up" style="animation-delay: 0.2s;">
+                <div class="feature-card bg-dark text-light">
+                    <div class="feature-icon">
+                        <i class="bi bi-shield-lock-fill text-warning"></i>
+                    </div>
+                    <h4>Protocolos de Seguridad</h4>
+                    <p class="text-light">
+                        Manejo especializado de estos residuos para evitar riesgos a la tripulación y al ecosistema marciano.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-4 fade-in-up">
+            <a href="{% url 'residuos_no_reciclables:index' %}" class="btn btn-outline-warning btn-lg">
+                <i class="bi bi-x-circle"></i> Ver Módulo No Reciclables
+            </a>
+        </div>
+    </div>
+</section>
+
+
 <!-- NASA Challenge Section -->
 <section id="nasa-challenge" class="nasa-section">
     <div class="container position-relative">

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'nasa_project',
     'puntos_reciclaje',
     'blog',
+    'residuos_no_reciclables',
 ]
 
 MIDDLEWARE = [

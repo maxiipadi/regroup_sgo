@@ -1,0 +1,183 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="container py-5">
+    <div class="text-center mb-5 fade-in-up">
+        <h1 class="display-5 fw-bold text-warning">
+            Tratamiento de Residuos No Reciclables
+        </h1>
+        <p class="lead text-muted">
+            Simulación de estrategias para manejar residuos imposibles de reciclar en Marte.
+        </p>
+    </div>
+
+    <div class="row g-4">
+        <!-- Compactación -->
+        <div class="col-md-6 fade-in-up">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-box-fill text-primary"></i> Compactación y Almacenamiento
+                    </h5>
+                    <p class="card-text">
+                        Los residuos se compactan y se almacenan en contenedores especiales para su posterior análisis o envío a Tierra.
+                    </p>
+                    <button class="btn btn-outline-primary w-100" onclick="simular('compactacion')">Compactación</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Incineración -->
+        <div class="col-md-6 fade-in-up">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-fire text-danger"></i> Incineración Controlada
+                    </h5>
+                    <p class="card-text">
+                        Incineración con filtrado de aire para reducir volumen sin contaminar el hábitat marciano.
+                    </p>
+                    <button class="btn btn-outline-danger w-100" onclick="simular('incineracion')">Incineración</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Energía -->
+        <div class="col-md-6 fade-in-up">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-lightning-fill text-warning"></i> Conversión en Energía
+                    </h5>
+                    <p class="card-text">
+                        Transformación de residuos en biogás o electricidad para abastecer los módulos de la base.
+                    </p>
+                    <button class="btn btn-outline-warning w-100" onclick="simular('energia')">Conversión Energética</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reutilización Creativa -->
+        <div class="col-md-6 fade-in-up">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-brush text-success"></i> Reutilización Creativa
+                    </h5>
+                    <p class="card-text">
+                        Proponé ideas para reutilizar objetos no reciclables de forma ingeniosa y útil en Marte.
+                    </p>
+                    <form method="post" class="mt-3">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="idea" class="form-label">Tu idea creativa</label>
+                            <textarea class="form-control" id="idea" name="idea" rows="3" placeholder="Ej: usar cables viejos como soporte para plantas marcianas..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">
+                            <i class="bi bi-send-fill"></i> Enviar Idea
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Simulación -->
+    <div class="modal fade" id="simModal" tabindex="-1" aria-labelledby="simModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content bg-dark text-light">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="simModalLabel">Simulación</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div id="simAnimacion">
+                        <div class="spinner-border text-warning mb-3" role="status"></div>
+                        <p class="lead">Procesando estrategia...</p>
+                    </div>
+                    <div id="simResultado" class="d-none">
+                        <i id="simIcono" class="bi bi-check-circle-fill text-success mb-3" style="font-size: 2rem;"></i>
+                        <p class="mb-4" id="simTexto"></p>
+                        <img id="graficoSimulacion" src="{% static 'residuos_no_reciclables/img/distribucion_residuos_no_reciclables.png' %}" alt="Gráfico de distribución" class="img-fluid rounded shadow" style="max-width: 500px;">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+function simular(tipo) {
+    const mensajes = {
+        compactacion: {
+            texto: "Los residuos han sido compactados y almacenados en contenedores sellados. Listos para análisis posterior.",
+            icono: "bi-box-fill text-primary",
+            titulo: "Compactación y Almacenamiento"
+        },
+        incineracion: {
+            texto: "Incineración completada con éxito. Filtros de aire activados. Volumen reducido en un 87%.",
+            icono: "bi-fire text-danger",
+            titulo: "Incineración Controlada"
+        },
+        energia: {
+            texto: "Conversión energética exitosa. Se ha generado biogás para alimentar el módulo de comunicaciones.",
+            icono: "bi-lightning-fill text-warning",
+            titulo: "Conversión en Energía"
+        },
+        reutilizacion: {
+            texto: "Idea registrada. ¡La creatividad es clave para la supervivencia marciana!",
+            icono: "bi-brush text-success",
+            titulo: "Reutilización Creativa"
+        }
+    };
+
+    const modal = new bootstrap.Modal(document.getElementById("simModal"));
+    const animacion = document.getElementById("simAnimacion");
+    const resultado = document.getElementById("simResultado");
+    const texto = document.getElementById("simTexto");
+    const icono = document.getElementById("simIcono");
+    const titulo = document.getElementById("simModalLabel");
+
+    // Mostrar modal y animación
+    animacion.classList.remove("d-none");
+    resultado.classList.add("d-none");
+
+    const datos = mensajes[tipo];
+    titulo.textContent = `Simulación: ${datos.titulo}`;
+    texto.textContent = datos.texto;
+    icono.className = `${datos.icono}`;
+
+    modal.show();
+
+    // Llamar a la vista que genera el gráfico
+    fetch("{% url 'residuos_no_reciclables:generar_grafico' %}")
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error al generar gráfico");
+            }
+            return response.json();
+        })
+        .then(data => {
+            setTimeout(() => {
+                animacion.classList.add("d-none");
+                resultado.classList.remove("d-none");
+
+                // Recargar imagen del gráfico sin caché
+                const grafico = document.getElementById("graficoSimulacion");
+                grafico.src = "{% static 'residuos_no_reciclables/img/distribucion_residuos_no_reciclables.png' %}?" + new Date().getTime();
+            }, 2500);
+        })
+        .catch(error => {
+            console.error("Error en la simulación:", error);
+            texto.textContent = "Hubo un error al generar el gráfico.";
+            animacion.classList.add("d-none");
+            resultado.classList.remove("d-none");
+        });
+}
+</script>
+
+{% endblock %}
