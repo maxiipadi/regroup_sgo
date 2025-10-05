@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class RaeeInfoConfig(AppConfig):
+class ResiduosNoReciclablesConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'raee_info'
+    name = 'residuos_no_reciclables'

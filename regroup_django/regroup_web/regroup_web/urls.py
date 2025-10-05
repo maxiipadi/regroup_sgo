@@ -22,11 +22,11 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('core.urls')),
-    path('raee/', include('raee_info.urls')),
     path('cooperativa/', include('cooperativa.urls')),
     path('nasa/', include('nasa_project.urls')),
     path('puntos/', include('puntos_reciclaje.urls')),
     path('blog/', include('blog.urls')),
+    path('residuos/', include('residuos_no_reciclables.urls')),
 ]
 
 # Servir archivos media en desarrollo
