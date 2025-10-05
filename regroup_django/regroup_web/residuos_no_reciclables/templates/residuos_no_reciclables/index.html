@@ -306,6 +306,93 @@
             padding: 25px;
         }
     }
+
+    /* Vista de Proceso */
+.treatment-card {
+    background-color: #1c1f26;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: #e2e8f0;
+}
+
+.treatment-card h5 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    color: var(--cosmic-blue);
+}
+
+.treatment-card p {
+    font-size: 1rem;
+    color: #cbd5e1;
+}
+
+.card-icon {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    display: block;
+    text-align: center;
+}
+
+/* Accordion */
+.accordion-button {
+    background-color: #2a2e39;
+    color: #e2e8f0;
+    font-weight: 500;
+    border: none;
+    box-shadow: none;
+    transition: background-color 0.3s ease;
+}
+
+.accordion-button:hover {
+    background-color: #3b4252;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: #3b82f6;
+    color: #fff;
+}
+
+.accordion-body {
+    background-color: #1f232b;
+    color: #d1d5db;
+    padding: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Tabla de parámetros */
+.table {
+    background-color: #1f232b;
+    color: #e2e8f0;
+    font-size: 0.95rem;
+}
+
+.table thead {
+    background-color: #2d3340;
+    color: #93c5fd;
+}
+
+.table-bordered th,
+.table-bordered td {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .treatment-card {
+        padding: 20px;
+    }
+
+    .accordion-button {
+        font-size: 0.95rem;
+    }
+
+    .table {
+        font-size: 0.85rem;
+    }
+}
+
 </style>
 
 <section class="treatment-section">
