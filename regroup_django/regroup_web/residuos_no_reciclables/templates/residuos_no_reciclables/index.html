@@ -1,183 +1,583 @@
 {% extends 'core/base.html' %}
-{% load static %}
+
+{% block title %}Residuos No Reciclables - Basura en Marte{% endblock %}
 
 {% block content %}
-<section class="container py-5">
-    <div class="text-center mb-5 fade-in-up">
-        <h1 class="display-5 fw-bold text-warning">
-            Tratamiento de Residuos No Reciclables
-        </h1>
-        <p class="lead text-muted">
-            Simulación de estrategias para manejar residuos imposibles de reciclar en Marte.
-        </p>
-    </div>
-
-    <div class="row g-4">
-        <!-- Compactación -->
-        <div class="col-md-6 fade-in-up">
-            <div class="card shadow-sm h-100">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <i class="bi bi-box-fill text-primary"></i> Compactación y Almacenamiento
-                    </h5>
-                    <p class="card-text">
-                        Los residuos se compactan y se almacenan en contenedores especiales para su posterior análisis o envío a Tierra.
-                    </p>
-                    <button class="btn btn-outline-primary w-100" onclick="simular('compactacion')">Compactación</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Incineración -->
-        <div class="col-md-6 fade-in-up">
-            <div class="card shadow-sm h-100">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <i class="bi bi-fire text-danger"></i> Incineración Controlada
-                    </h5>
-                    <p class="card-text">
-                        Incineración con filtrado de aire para reducir volumen sin contaminar el hábitat marciano.
-                    </p>
-                    <button class="btn btn-outline-danger w-100" onclick="simular('incineracion')">Incineración</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Energía -->
-        <div class="col-md-6 fade-in-up">
-            <div class="card shadow-sm h-100">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <i class="bi bi-lightning-fill text-warning"></i> Conversión en Energía
-                    </h5>
-                    <p class="card-text">
-                        Transformación de residuos en biogás o electricidad para abastecer los módulos de la base.
-                    </p>
-                    <button class="btn btn-outline-warning w-100" onclick="simular('energia')">Conversión Energética</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Reutilización Creativa -->
-        <div class="col-md-6 fade-in-up">
-            <div class="card shadow-sm h-100">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <i class="bi bi-brush text-success"></i> Reutilización Creativa
-                    </h5>
-                    <p class="card-text">
-                        Proponé ideas para reutilizar objetos no reciclables de forma ingeniosa y útil en Marte.
-                    </p>
-                    <form method="post" class="mt-3">
-                        {% csrf_token %}
-                        <div class="mb-3">
-                            <label for="idea" class="form-label">Tu idea creativa</label>
-                            <textarea class="form-control" id="idea" name="idea" rows="3" placeholder="Ej: usar cables viejos como soporte para plantas marcianas..."></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-success w-100">
-                            <i class="bi bi-send-fill"></i> Enviar Idea
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de Simulación -->
-    <div class="modal fade" id="simModal" tabindex="-1" aria-labelledby="simModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content bg-dark text-light">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="simModalLabel">Simulación</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                </div>
-                <div class="modal-body text-center">
-                    <div id="simAnimacion">
-                        <div class="spinner-border text-warning mb-3" role="status"></div>
-                        <p class="lead">Procesando estrategia...</p>
-                    </div>
-                    <div id="simResultado" class="d-none">
-                        <i id="simIcono" class="bi bi-check-circle-fill text-success mb-3" style="font-size: 2rem;"></i>
-                        <p class="mb-4" id="simTexto"></p>
-                        <img id="graficoSimulacion" src="{% static 'residuos_no_reciclables/img/distribucion_residuos_no_reciclables.png' %}" alt="Gráfico de distribución" class="img-fluid rounded shadow" style="max-width: 500px;">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cerrar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<script>
-function simular(tipo) {
-    const mensajes = {
-        compactacion: {
-            texto: "Los residuos han sido compactados y almacenados en contenedores sellados. Listos para análisis posterior.",
-            icono: "bi-box-fill text-primary",
-            titulo: "Compactación y Almacenamiento"
-        },
-        incineracion: {
-            texto: "Incineración completada con éxito. Filtros de aire activados. Volumen reducido en un 87%.",
-            icono: "bi-fire text-danger",
-            titulo: "Incineración Controlada"
-        },
-        energia: {
-            texto: "Conversión energética exitosa. Se ha generado biogás para alimentar el módulo de comunicaciones.",
-            icono: "bi-lightning-fill text-warning",
-            titulo: "Conversión en Energía"
-        },
-        reutilizacion: {
-            texto: "Idea registrada. ¡La creatividad es clave para la supervivencia marciana!",
-            icono: "bi-brush text-success",
-            titulo: "Reutilización Creativa"
-        }
-    };
-
-    const modal = new bootstrap.Modal(document.getElementById("simModal"));
-    const animacion = document.getElementById("simAnimacion");
-    const resultado = document.getElementById("simResultado");
-    const texto = document.getElementById("simTexto");
-    const icono = document.getElementById("simIcono");
-    const titulo = document.getElementById("simModalLabel");
-
-    // Mostrar modal y animación
-    animacion.classList.remove("d-none");
-    resultado.classList.add("d-none");
-
-    const datos = mensajes[tipo];
-    titulo.textContent = `Simulación: ${datos.titulo}`;
-    texto.textContent = datos.texto;
-    icono.className = `${datos.icono}`;
-
-    modal.show();
-
-    // Llamar a la vista que genera el gráfico
-    fetch("{% url 'residuos_no_reciclables:generar_grafico' %}")
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Error al generar gráfico");
-            }
-            return response.json();
-        })
-        .then(data => {
-            setTimeout(() => {
-                animacion.classList.add("d-none");
-                resultado.classList.remove("d-none");
-
-                // Recargar imagen del gráfico sin caché
-                const grafico = document.getElementById("graficoSimulacion");
-                grafico.src = "{% static 'residuos_no_reciclables/img/distribucion_residuos_no_reciclables.png' %}?" + new Date().getTime();
-            }, 2500);
-        })
-        .catch(error => {
-            console.error("Error en la simulación:", error);
-            texto.textContent = "Hubo un error al generar el gráfico.";
-            animacion.classList.add("d-none");
-            resultado.classList.remove("d-none");
-        });
+<style>
+/* Variables de tema espacial */
+:root {
+    --mars-red: #CD5C5C;
+    --space-black: #0a0e27;
+    --star-white: #E8E8E8;
+    --plasma-purple: #7B2CBF;
+    --cosmic-blue: #06FFA5;
+    --warning-orange: #FF6B35;
 }
-</script>
 
+/* SOLUCIÓN: Eliminar cualquier margen/padding del body y contenedor principal */
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* Breadcrumb espacial - SIN margen inferior */
+.space-breadcrumb {
+    background: var(--space-black);
+    padding: 15px 0;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.space-breadcrumb a {
+    color: var(--cosmic-blue);
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.space-breadcrumb a:hover {
+    color: var(--warning-orange);
+}
+
+.space-breadcrumb .breadcrumb {
+    margin-bottom: 0;
+    background: transparent;
+}
+
+/* Sección principal de residuos no reciclables - SIN padding superior extra */
+.non-recyclable-section {
+    background: linear-gradient(135deg, var(--space-black) 0%, #1a1e3e 100%);
+    color: var(--star-white);
+    padding: 60px 0 80px 0;
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    margin-bottom: 0 !important;
+}
+
+.non-recyclable-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(2px 2px at 20% 30%, white, transparent),
+        radial-gradient(2px 2px at 60% 70%, white, transparent),
+        radial-gradient(1px 1px at 50% 50%, white, transparent);
+    background-size: 200px 200px;
+    opacity: 0.3;
+    animation: stars-movement 50s linear infinite;
+}
+
+@keyframes stars-movement {
+    from { background-position: 0 0; }
+    to { background-position: -200px 200px; }
+}
+
+/* Título principal */
+.non-recyclable-title {
+    font-size: 3rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 2rem;
+    margin-top: 0;
+    background: linear-gradient(90deg, var(--mars-red), var(--warning-orange));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+    z-index: 1;
+}
+
+/* Subtítulo descriptivo */
+.non-recyclable-subtitle {
+    text-align: center;
+    font-size: 1.3rem;
+    color: var(--star-white);
+    margin-bottom: 4rem;
+    opacity: 0.9;
+    position: relative;
+    z-index: 1;
+}
+
+/* Tarjeta de categoría de residuo */
+.waste-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 107, 53, 0.3);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 30px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+}
+
+.waste-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 107, 53, 0.1), transparent);
+    transition: left 0.5s;
+}
+
+.waste-card:hover::before {
+    left: 100%;
+}
+
+.waste-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--warning-orange);
+    box-shadow: 0 20px 40px rgba(255, 107, 53, 0.3);
+}
+
+/* Icono de categoría */
+.waste-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    display: block;
+    text-align: center;
+    filter: drop-shadow(0 0 10px currentColor);
+}
+
+/* Título de categoría */
+.waste-category-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--warning-orange);
+    text-align: center;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Lista de items */
+.waste-items-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.waste-items-list li {
+    padding: 12px 20px;
+    margin-bottom: 10px;
+    background: rgba(255, 255, 255, 0.03);
+    border-left: 3px solid var(--mars-red);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.waste-items-list li:hover {
+    background: rgba(255, 107, 53, 0.1);
+    border-left-color: var(--warning-orange);
+    transform: translateX(10px);
+}
+
+.waste-items-list li::before {
+    content: '⚠️';
+    margin-right: 10px;
+}
+
+/* Badge de peligrosidad */
+.danger-badge {
+    display: inline-block;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #DC2626, #991B1B);
+    color: white;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 15px;
+    box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
+}
+
+.danger-badge.extreme {
+    background: linear-gradient(135deg, #7F1D1D, #450A0A);
+    animation: pulse-danger 2s infinite;
+}
+
+.danger-badge.critical {
+    background: linear-gradient(135deg, #991B1B, #7F1D1D);
+    animation: pulse-danger 2s infinite;
+}
+
+.danger-badge.moderate {
+    background: linear-gradient(135deg, #EA580C, #C2410C);
+}
+
+@keyframes pulse-danger {
+    0%, 100% { box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4); }
+    50% { box-shadow: 0 4px 25px rgba(220, 38, 38, 0.8); }
+}
+
+/* Descripción del riesgo */
+.risk-description {
+    background: rgba(220, 38, 38, 0.1);
+    border: 1px solid rgba(220, 38, 38, 0.3);
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 20px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.risk-description strong {
+    color: var(--warning-orange);
+}
+
+/* Sección de advertencia global */
+.global-warning {
+    background: linear-gradient(135deg, rgba(220, 38, 38, 0.2), rgba(153, 27, 27, 0.2));
+    border: 2px solid var(--mars-red);
+    border-radius: 15px;
+    padding: 40px;
+    margin-top: 50px;
+    margin-bottom: 0;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.global-warning::before {
+    content: '⚠️';
+    font-size: 5rem;
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: pulse-warning 2s infinite;
+}
+
+@keyframes pulse-warning {
+    0%, 100% { transform: translateX(-50%) scale(1); }
+    50% { transform: translateX(-50%) scale(1.1); }
+}
+
+.global-warning h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--warning-orange);
+    margin-bottom: 20px;
+    margin-top: 30px;
+}
+
+.global-warning p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+}
+
+/* Botón de acción */
+.protocol-btn {
+    background: linear-gradient(135deg, var(--mars-red), var(--warning-orange));
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4);
+    cursor: pointer;
+}
+
+.protocol-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(255, 107, 53, 0.6);
+}
+
+/* Estadísticas de riesgo */
+.risk-stats {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 15px;
+    padding: 40px;
+    margin: 50px 0;
+    position: relative;
+    z-index: 1;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 20px;
+}
+
+.stat-number {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--warning-orange);
+    display: block;
+    margin-bottom: 10px;
+}
+
+.stat-label {
+    font-size: 1.1rem;
+    color: var(--star-white);
+    opacity: 0.9;
+}
+
+/* Grid responsivo */
+@media (max-width: 768px) {
+    .non-recyclable-title {
+        font-size: 2rem;
+    }
+    
+    .non-recyclable-subtitle {
+        font-size: 1rem;
+    }
+    
+    .waste-card {
+        padding: 20px;
+    }
+    
+    .waste-icon {
+        font-size: 3rem;
+    }
+    
+    .waste-category-title {
+        font-size: 1.4rem;
+    }
+    
+    .global-warning {
+        padding: 30px 20px;
+    }
+    
+    .global-warning h3 {
+        font-size: 1.5rem;
+    }
+    
+    .global-warning p {
+        font-size: 1rem;
+    }
+}
+
+/* Efecto de partículas flotantes */
+.particle {
+    position: absolute;
+    background: radial-gradient(circle, rgba(255, 107, 53, 0.8), transparent);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: float-particle 15s infinite;
+}
+
+@keyframes float-particle {
+    0%, 100% { transform: translate(0, 0) scale(1); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translate(100px, -500px) scale(0); opacity: 0; }
+}
+</style>
+
+<!-- Breadcrumb -->
+<div class="space-breadcrumb">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="{% url 'core:index' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'nasa_project:index' %}">Basura en Marte</a></li>
+                <li class="breadcrumb-item active text-white" aria-current="page">Residuos No Reciclables</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<!-- Sección principal -->
+<section class="non-recyclable-section">
+    <div class="container position-relative">
+        <h1 class="non-recyclable-title">
+            Residuos No Reciclables en Marte
+        </h1>
+        
+        <p class="non-recyclable-subtitle">
+            Materiales que requieren protocolos especiales de manejo y almacenamiento
+        </p>
+        
+        <!-- Estadísticas de riesgo -->
+        <div class="risk-stats">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="stat-item">
+                        <span class="stat-number">~18%</span>
+                        <span class="stat-label">Del total de residuos</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-item">
+                        <span class="stat-number">2,268</span>
+                        <span class="stat-label">kg no reciclables</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-item">
+                        <span class="stat-number">6</span>
+                        <span class="stat-label">Categorías críticas</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-item">
+                        <span class="stat-number">24/7</span>
+                        <span class="stat-label">Monitoreo requerido</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <!-- Residuos Biológicos -->
+            <div class="col-md-6 col-lg-4">
+                <div class="waste-card">
+                    <span class="waste-icon">🦠</span>
+                    <h3 class="waste-category-title">Residuos Biológicos</h3>
+                    <span class="danger-badge">Alto Riesgo</span>
+                    
+                    <ul class="waste-items-list">
+                        <li>Desechos médicos contaminados</li>
+                        <li>Muestras biológicas</li>
+                        <li>Material orgánico infectado</li>
+                        <li>Equipos de protección usados</li>
+                    </ul>
+                    
+                    <div class="risk-description">
+                        <strong>Riesgo:</strong> Contaminación cruzada y propagación de patógenos en ambiente cerrado marciano.
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Residuos Químicos -->
+            <div class="col-md-6 col-lg-4">
+                <div class="waste-card">
+                    <span class="waste-icon">🧪</span>
+                    <h3 class="waste-category-title">Residuos Químicos</h3>
+                    <span class="danger-badge extreme">Extremo</span>
+                    
+                    <ul class="waste-items-list">
+                        <li>Reactivos de laboratorio</li>
+                        <li>Baterías dañadas</li>
+                        <li>Fluidos corrosivos</li>
+                        <li>Solventes gastados</li>
+                    </ul>
+                    
+                    <div class="risk-description">
+                        <strong>Riesgo:</strong> Reacciones peligrosas y contaminación del sistema de soporte vital.
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Residuos Radiactivos -->
+            <div class="col-md-6 col-lg-4">
+                <div class="waste-card">
+                    <span class="waste-icon">☢️</span>
+                    <h3 class="waste-category-title">Residuos Radiactivos</h3>
+                    <span class="danger-badge critical">Crítico</span>
+                    
+                    <ul class="waste-items-list">
+                        <li>Generadores RTG agotados</li>
+                        <li>Material radioactivo de experimentos</li>
+                        <li>Sensores contaminados</li>
+                        <li>Blindaje degradado</li>
+                    </ul>
+                    
+                    <div class="risk-description">
+                        <strong>Riesgo:</strong> Exposición prolongada a radiación en tripulación.
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Residuos Electrónicos Críticos -->
+            <div class="col-md-6 col-lg-4">
+                <div class="waste-card">
+                    <span class="waste-icon">💾</span>
+                    <h3 class="waste-category-title">Electrónicos Críticos</h3>
+                    <span class="danger-badge">Alto Riesgo</span>
+                    
+                    <ul class="waste-items-list">
+                        <li>Computadoras con datos sensibles</li>
+                        <li>Sistemas de navegación</li>
+                        <li>Equipos de comunicación</li>
+                        <li>Servidores de misión</li>
+                    </ul>
+                    
+                    <div class="risk-description">
+                        <strong>Riesgo:</strong> Pérdida de datos críticos y seguridad de la misión.
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Materiales Compuestos -->
+            <div class="col-md-6 col-lg-4">
+                <div class="waste-card">
+                    <span class="waste-icon">🔬</span>
+                    <h3 class="waste-category-title">Materiales Compuestos</h3>
+                    <span class="danger-badge moderate">Moderado</span>
+                    
+                    <ul class="waste-items-list">
+                        <li>Laminados complejos</li>
+                        <li>Adhesivos permanentes</li>
+                        <li>Materiales multi-capa</li>
+                        <li>Compuestos sellados</li>
+                    </ul>
+                    
+                    <div class="risk-description">
+                        <strong>Riesgo:</strong> Imposibilidad de separación con tecnología disponible.
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Residuos Contaminados -->
+            <div class="col-md-6 col-lg-4">
+                <div class="waste-card">
+                    <span class="waste-icon">☣️</span>
+                    <h3 class="waste-category-title">Contaminados</h3>
+                    <span class="danger-badge">Alto Riesgo</span>
+                    
+                    <ul class="waste-items-list">
+                        <li>Materiales expuestos al regolito</li>
+                        <li>Equipos de superficie</li>
+                        <li>Trajes EVA comprometidos</li>
+                        <li>Herramientas externas</li>
+                    </ul>
+                    
+                    <div class="risk-description">
+                        <strong>Riesgo:</strong> Contaminación por percloratos marcianos tóxicos.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Advertencia Global -->
+        <div class="global-warning">
+            <h3>Protocolo de Almacenamiento Especial</h3>
+            <p>
+                Estos residuos requieren <strong>contenedores sellados herméticamente</strong>, 
+                <strong>aislamiento térmico criogénico</strong> y <strong>monitoreo constante 24/7</strong>. 
+                El almacenamiento inadecuado podría comprometer la seguridad de toda la misión 
+                y poner en riesgo la vida de la tripulación.
+            </p>
+            <p class="mt-3">
+                <i class="bi bi-shield-exclamation"></i> 
+                <strong>Nota Crítica:</strong> El retorno a órbita para eliminación no es viable. 
+                Se requiere almacenamiento a largo plazo en la superficie marciana.
+            </p>
+            <button class="protocol-btn" onclick="window.location.href='{% url 'nasa_project:index' %}'">
+                <i class="bi bi-file-earmark-text"></i> Ver Protocolos Completos
+            </button>
+        </div>
+    </div>
+    
+    <!-- Partículas flotantes decorativas -->
+    <div class="particle" style="width: 10px; height: 10px; top: 20%; left: 10%; animation-delay: 0s;"></div>
+    <div class="particle" style="width: 8px; height: 8px; top: 60%; left: 80%; animation-delay: 3s;"></div>
+    <div class="particle" style="width: 12px; height: 12px; top: 80%; left: 30%; animation-delay: 6s;"></div>
+    <div class="particle" style="width: 6px; height: 6px; top: 40%; left: 70%; animation-delay: 9s;"></div>
+    <div class="particle" style="width: 9px; height: 9px; top: 90%; left: 50%; animation-delay: 12s;"></div>
+</section>
 {% endblock %}
